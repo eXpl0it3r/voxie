@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 2.8.11)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # project
@@ -19,7 +19,7 @@ if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 endif()
 
 if(WIN32)
-    # Tell glew we're building an exectuable.
+    # Tell glew we're building an executable.
     add_definitions(-DGLEW_STATIC)
     if(MSVC)
         add_definitions(-D_CRT_SECURE_NO_WARNINGS)
@@ -65,8 +65,11 @@ find_package(Qt5OpenGL REQUIRED)
 find_package(OpenGL REQUIRED)
 
 set(EDITOR_LIBS
-    ${OPENGL_LIBRARY}
     ${BULLET_LIBRARIES}
+    ${Qt5Core_LIBRARIES}
+    ${Qt5Widgets_LIBRARIES}
+    ${Qt5OpenGL_LIBRARIES}
+    ${OPENGL_LIBRARY}
 )
 
 if(LINUX)
@@ -87,8 +90,11 @@ endif()
 # build
 
 include_directories(
-    ${CMAKE_INCLUDE_PATH}
     ${BULLET_INCLUDE_DIRS}
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5OpenGL_INCLUDE_DIRS}
+    ${CMAKE_INCLUDE_PATH}
 )
 
 # editor build
@@ -99,4 +105,3 @@ set_target_properties(voxie PROPERTIES
 )
 include_directories(EDITOR_INCLUDES)
 target_link_libraries(voxie ${EDITOR_LIBS})
-qt5_use_modules(voxie Widgets OpenGL)
