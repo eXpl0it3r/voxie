@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "voxel.h"
-#include "modelproperties.h"
-#include "mainwindow.h"
-#include "editorcommon.h"
+#include "VoxelFile.hpp"
+#include "ReferencePoint.hpp"
+#include "ModelProperties.hpp"
+#include "MainWindow.hpp"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -31,6 +31,8 @@ THE SOFTWARE.
 #include <QSpinBox>
 #include <QComboBox>
 #include <QPushButton>
+
+extern QLabel * create_label(const QString & text);
 
 // ModelProperties
 

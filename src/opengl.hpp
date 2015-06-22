@@ -20,22 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "mainwindow.h"
+#ifndef VOXIE_OPENGL_HPP
+#define VOXIE_OPENGL_HPP
 
-#include <QApplication>
-#include <QMainWindow>
-#include <QMdiArea>
-#include <QMdiSubWindow>
-#include <QActionGroup>
+#include <GL/glew.h>
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication::addLibraryPath("plugins");
-    QCoreApplication::setApplicationName("Voxie");
-    QGuiApplication::setApplicationDisplayName("Voxie");
-    QApplication::setStyle("fusion");
-    QApplication app(argc, argv);
-    MainWindow window;
-    window.show();
-    return app.exec();
-}
+#endif // VOXIE_OPENGL_HPP

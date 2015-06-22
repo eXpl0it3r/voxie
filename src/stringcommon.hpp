@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_STRING_H
-#define VOXIE_STRING_H
+#ifndef VOXIE_STRINGCOMMON_HPP
+#define VOXIE_STRINGCOMMON_HPP
 
 #include <ctype.h>
 #include <string>
@@ -129,4 +129,4 @@ inline bool starts_with(const std::string & a, const std::string & b)
     return a.compare(0, b.length(), b) == 0;
 }
 
-#endif // VOXIE_STRING_H
+#endif // VOXIE_STRINGCOMMON_HPP

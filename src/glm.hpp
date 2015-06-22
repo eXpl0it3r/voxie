@@ -20,15 +20,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_GLM_H
-#define VOXIE_GLM_H
+#ifndef VOXIE_GLM_HPP
+#define VOXIE_GLM_HPP
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "include_gl.h"
+#include "opengl.hpp"
 
 using glm::mat4;
 using glm::mat3;
@@ -116,4 +116,4 @@ inline vec3 convert_vec(const btVector3 & value)
     return vec3(value.x(), value.y(), value.z());
 }
 
-#endif // VOXIE_GLM_H
+#endif // VOXIE_GLM_HPP

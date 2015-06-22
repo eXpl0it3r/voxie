@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_COLOR_H
-#define VOXIE_COLOR_H
+#ifndef VOXIE_RGBCOLOR_HPP
+#define VOXIE_RGBCOLOR_HPP
 
 #include <algorithm>
 
@@ -67,4 +67,4 @@ void rgb_to_hsv(float r, float g, float b,
 void hsv_to_rgb(float h, float s, float v,
                 float & r, float & g, float & b);
 
-#endif // VOXIE_COLOR_H
+#endif // VOXIE_RGBCOLOR_HPP

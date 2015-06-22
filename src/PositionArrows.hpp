@@ -20,26 +20,34 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_EDITORCOMMON_H
-#define VOXIE_EDITORCOMMON_H
+#ifndef VOXIE_POSITIONARROWS_HPP
+#define VOXIE_POSITIONARROWS_HPP
 
-#include <QString>
-#include <string>
-#include "glm.h"
+#include "glm.hpp"
 
-class QLabel;
-class QWidget;
 class btCompoundShape;
-
-std::string convert_str(const QString & str);
-QLabel * create_label(const QString & text);
-QString get_model_name(QWidget * parent, bool save);
-void set_window_file_path(QWidget * w, const QString & name);
 
 #define NONE_CONE -1
 #define X_CONE 0
 #define Y_CONE 1
 #define Z_CONE 2
+
+#define CONE_HEIGHT 75.0f
+#define CONE_RADIUS 10.0f
+#define LINE_LEN 100.0f
+#define CONE_START (LINE_LEN + CONE_HEIGHT / 2.0f)
+
+#define RED_R 248
+#define RED_G 0
+#define RED_B 53
+
+#define BLUE_R 30
+#define BLUE_G 117
+#define BLUE_B 255
+
+#define GREEN_R 154
+#define GREEN_G 200
+#define GREEN_B 2
 
 class PositionArrows
 {
@@ -64,16 +72,21 @@ public:
     void draw();
 };
 
-#define RED_R 248
-#define RED_G 0
-#define RED_B 53
+struct ArrowResultCallback : public btCollisionWorld::ClosestRayResultCallback
+{
+    int index;
 
-#define BLUE_R 30
-#define BLUE_G 117
-#define BLUE_B 255
+    ArrowResultCallback(const btVector3 & a, const btVector3 & b)
+    : btCollisionWorld::ClosestRayResultCallback(a, b), index(NONE_CONE)
+    {
+    }
 
-#define GREEN_R 154
-#define GREEN_G 200
-#define GREEN_B 2
+    btScalar addSingleResult(btCollisionWorld::LocalRayResult & r, bool n)
+    {
+        index = r.m_localShapeInfo->m_triangleIndex;
+        return btCollisionWorld::ClosestRayResultCallback::addSingleResult(
+            r, n);
+    }
+};
 
-#endif // VOXIE_EDITORCOMMON_H
+#endif // VOXIE_POSITIONARROWS_HPP

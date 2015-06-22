@@ -20,7 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "glm.h"
+#ifndef VOXIE_MAINWINDOW_HPP
+#define VOXIE_MAINWINDOW_HPP
+
+#include "glm.hpp"
 
 #include <QMainWindow>
 #include <QAction>
@@ -107,3 +110,5 @@ private slots:
     void optimize();
     void rotate();
 };
+
+#endif // VOXIE_MAINWINDOW_HPP

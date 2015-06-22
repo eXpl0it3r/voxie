@@ -20,49 +20,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_TYPES_H
-#define VOXIE_TYPES_H
+#ifndef VOXIE_PALETTEGRID_HPP
+#define VOXIE_PALETTEGRID_HPP
 
-#include <vector>
-#include <string>
+#include <QWidget>
 
-#if defined(_MSC_VER)
+class MainWindow;
 
-// Define _W64 macros to mark types changing their size, like intptr_t.
-#ifndef _W64
-#if !defined(__midl) && (defined(_X86_) || defined(_M_IX86)) && _MSC_VER >= 1300
-#define _W64 __w64
-#else
-#define _W64
-#endif
-#endif
+class PaletteGrid : public QWidget
+{
+    Q_OBJECT
 
-#ifdef _WIN64
-   typedef signed __int64 intptr_t;
-   typedef unsigned __int64 uintptr_t;
-#else
-   typedef _W64 signed int intptr_t;
-   typedef _W64 unsigned int uintptr_t;
-#endif // _WIN64
+public:
+    MainWindow * window;
+    int palette_index;
+    QPoint drag_start;
 
-typedef signed __int64 int64_t;
-typedef unsigned __int64 uint64_t;
+    PaletteGrid(MainWindow * parent);
+    int get_index(const QPoint & p);
+    void paintEvent(QPaintEvent * event);
+    void mousePressEvent(QMouseEvent * event);
+    void mouseMoveEvent(QMouseEvent * event);
+    void dragEnterEvent(QDragEnterEvent * event);
+    void dropEvent(QDropEvent * event);
+};
 
-#include <unordered_map>
-#include <unordered_set>
-#define fast_map std::tr1::unordered_map
-#define fast_set std::tr1::unordered_set
-
-#else
-
-#include <stdint.h>
-#include <tr1/unordered_map>
-#include <tr1/unordered_set>
-#define fast_map std::tr1::unordered_map
-#define fast_set std::tr1::unordered_set
-
-#endif // _MSC_VER
-
-typedef std::vector<std::string> StringList;
-
-#endif // VOXIE_TYPES_H
+#endif // VOXIE_PALETTEGRID_HPP

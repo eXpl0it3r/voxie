@@ -20,12 +20,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "mainwindow.h"
-#include "voxeditor.h"
-#include "palette.h"
-#include "modelproperties.h"
-#include "voxel.h"
-#include "editorcommon.h"
+#include "MainWindow.hpp"
+#include "VoxelEditor.hpp"
+#include "PaletteEditor.hpp"
+#include "PaletteGrid.hpp"
+#include "ModelProperties.hpp"
+#include "VoxelFile.hpp"
+#include "PositionArrows.hpp"
 
 #include <QToolBar>
 #include <QMenuBar>
@@ -40,6 +41,8 @@ THE SOFTWARE.
 #include <QCloseEvent>
 #include <QGLWidget>
 #include <QFileDialog>
+
+extern QString get_model_name(QWidget * parent, bool save);
 
 QAction * create_tool_icon(const QString & name, const QString & v,
                            QActionGroup * group, int id)

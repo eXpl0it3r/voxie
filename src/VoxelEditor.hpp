@@ -20,8 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "glm.h"
-#include "editorcommon.h"
+#ifndef VOXIE_VOXELEDITOR_HPP
+#define VOXIE_VOXELEDITOR_HPP
+
+#include "glm.hpp"
+#include "PositionArrows.hpp"
+#include "SelectedVoxel.hpp"
 
 #include <QGLWidget>
 
@@ -31,20 +35,6 @@ class MainWindow;
 class btCollisionObject;
 class QPaintEvent;
 class QRubberBand;
-
-class SelectedVoxel
-{
-public:
-    int x, y, z;
-    unsigned char v;
-
-    SelectedVoxel(int x = 0, int y = 0, int z = 0, unsigned char v = 0)
-    : x(x), y(y), z(z), v(v)
-    {
-    }
-};
-
-typedef std::vector<SelectedVoxel> SelectedVoxels;
 
 class VoxelEditor : public QGLWidget
 {
@@ -114,3 +104,5 @@ public slots:
     void save();
     void save_as();
 };
+
+#endif // VOXIE_VOXELEDITOR_HPP

@@ -20,81 +20,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "include_gl.h"
-#include "glm.h"
-#include "editorcommon.h"
-#include "draw.h"
-#include "collision.h"
-#include <QObject>
-#include <QLabel>
-#include <QInputDialog>
-#include <QEvent>
-#include <QApplication>
-#include <QFileDialog>
+#include "PositionArrows.hpp"
+#include "collision.hpp"
+#include "draw.hpp"
 
-QLabel * create_label(const QString & text)
-{
-    QLabel * label = new QLabel(text);
-    label->setFixedWidth(50);
-    label->setAlignment(Qt::AlignCenter);
-    return label;
-}
-
-std::string convert_str(const QString & str)
-{
-    return str.toUtf8().constData();
-}
-
-QString get_model_name(QWidget * parent, bool save)
-{
-    QString caption = QObject::tr("Model file dialog");
-    QString filter = QObject::tr("Voxie model (*.vxi);;All Files (*)");
-    QString text;
-    if (save)
-        text = QFileDialog::getSaveFileName(parent, caption, "", filter);
-    else
-        text = QFileDialog::getOpenFileName(parent, caption, "", filter);
-    return text;
-}
-
-void set_window_file_path(QWidget * w, const QString & name)
-{
-    w->setWindowFilePath(name);
-    QEvent e(QEvent::WindowTitleChange);
-    QApplication::sendEvent(w, &e);
-}
-
-#define CONE_HEIGHT 75.0f
-#define CONE_RADIUS 10.0f
-#define LINE_LEN 100.0f
-#define CONE_START (LINE_LEN + CONE_HEIGHT / 2.0f)
-
-inline btTransform get_pos_trans(const vec3 & p)
-{
-    btTransform trans;
-    trans.setIdentity();
-    trans.setOrigin(convert_vec(p));
-    return trans;
-}
-
-struct ArrowResultCallback : public btCollisionWorld::ClosestRayResultCallback
-{
-    int index;
-
-    ArrowResultCallback(const btVector3 & a, const btVector3 & b)
-    : btCollisionWorld::ClosestRayResultCallback(a, b), index(NONE_CONE)
-    {
-    }
-
-    btScalar addSingleResult(btCollisionWorld::LocalRayResult & r, bool n)
-    {
-        index = r.m_localShapeInfo->m_triangleIndex;
-        return btCollisionWorld::ClosestRayResultCallback::addSingleResult(
-            r, n);
-    }
-};
-
-// PositionArrows
+extern btTransform get_pos_trans(const vec3 & p);
 
 PositionArrows::PositionArrows(float scale)
 : pan(NONE_CONE), shape(NULL)

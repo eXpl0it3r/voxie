@@ -20,51 +20,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_RANDOM_H
-#define VOXIE_RANDOM_H
+#include "MainWindow.hpp"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-#include <stdlib.h>
+#include <QApplication>
+#include <QMainWindow>
+#include <QMdiArea>
+#include <QMdiSubWindow>
+#include <QActionGroup>
 
-#include "glm.h"
-
-inline float randf()
+int main(int argc, char *argv[])
 {
-    return float(rand()) / float(RAND_MAX);
+    QCoreApplication::addLibraryPath("plugins");
+    QCoreApplication::setApplicationName("Voxie");
+    QGuiApplication::setApplicationDisplayName("Voxie");
+    QApplication::setStyle("fusion");
+    QApplication app(argc, argv);
+    MainWindow window;
+    window.show();
+    return app.exec();
 }
-
-inline float randrange(float a, float b)
-{
-    return a + (b - a) * randf();
-}
-
-inline float randrange(float a)
-{
-    return a * randf();
-}
-
-inline int randint(int a)
-{
-    return int(randrange(float(a)));
-}
-
-inline int randint(int a, int b)
-{
-    return int(randrange(float(a), float(b)));
-}
-
-inline void vecrand(vec3 & a)
-{
-    // uniform spherical randomization
-    float f;
-    a.z = -(float)rand()/(float)(RAND_MAX>>1) + 1.0f;
-    float rad = rand()*(float(M_PI)*2.0f/float(RAND_MAX));
-    a.x = cos(rad);
-    a.y = sin(rad);
-    f = sqrtf(1.0f - a.z*a.z);
-    a.x *= f;
-    a.y *= f;
-}
-
-#endif // VOXIE_RANDOM_H

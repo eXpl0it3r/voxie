@@ -20,9 +20,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "color.h"
-#include "mathcommon.h"
-#include "include_gl.h"
+#include "RGBColor.hpp"
+#include "mathcommon.hpp"
+#include "opengl.hpp"
 
 // RGBColor
 

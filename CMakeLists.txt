@@ -32,14 +32,20 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 # sources
 
 set(EDITORSRCS
-    ${SRC_DIR}/voxel.cpp
-    ${SRC_DIR}/color.cpp
-    ${SRC_DIR}/run.cpp
-    ${SRC_DIR}/mainwindow.cpp
-    ${SRC_DIR}/voxeditor.cpp
-    ${SRC_DIR}/palette.cpp
-    ${SRC_DIR}/modelproperties.cpp
-    ${SRC_DIR}/editorcommon.cpp
+    ${SRC_DIR}/globals.cpp
+    ${SRC_DIR}/ReferencePoint.cpp
+    ${SRC_DIR}/VoxelModel.cpp
+    ${SRC_DIR}/VoxelFile.cpp
+    ${SRC_DIR}/RGBColor.cpp
+    ${SRC_DIR}/main.cpp
+    ${SRC_DIR}/MainWindow.cpp
+    ${SRC_DIR}/VoxelEditor.cpp
+    ${SRC_DIR}/ColorSpace.cpp
+    ${SRC_DIR}/ColorSlider.cpp
+    ${SRC_DIR}/PaletteGrid.cpp
+    ${SRC_DIR}/PaletteEditor.cpp
+    ${SRC_DIR}/ModelProperties.cpp
+    ${SRC_DIR}/PositionArrows.cpp
     ${SRC_DIR}/draw.cpp
     ${SRC_DIR}/glew.c
 )

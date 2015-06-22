@@ -20,12 +20,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_DRAW_H
-#define VOXIE_DRAW_H
+#ifndef VOXIE_DRAW_HPP
+#define VOXIE_DRAW_HPP
 
-#include "color.h"
-#include "glm.h"
-#include "include_gl.h"
+#include "RGBColor.hpp"
+#include "glm.hpp"
+#include "opengl.hpp"
 
 void setup_lighting();
 
@@ -123,4 +123,4 @@ void setup_opengl();
 
 void draw_cone(const vec3 & a, const vec3 & b, float rd, int n = 8);
 
-#endif // VOXIE_DRAW_H
+#endif // VOXIE_DRAW_HPP

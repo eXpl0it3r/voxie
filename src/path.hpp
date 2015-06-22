@@ -20,8 +20,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_PATH_H
-#define VOXIE_PATH_H
+#ifndef VOXIE_PATH_HPP
+#define VOXIE_PATH_HPP
 
 #include <sys/stat.h>
 #include <fstream>
@@ -93,4 +93,4 @@ inline std::string get_path_basename(const std::string & path)
     return path2.substr(0, path2.find_last_of("."));
 }
 
-#endif // VOXIE_PATH_H
+#endif // VOXIE_PATH_HPP

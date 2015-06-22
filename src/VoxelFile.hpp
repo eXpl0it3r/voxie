@@ -20,56 +20,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_VOXEL_H
-#define VOXIE_VOXEL_H
+#ifndef VOXIE_VOXELFILE_HPP
+#define VOXIE_VOXELFILE_HPP
 
-#include <iostream>
-#include <string>
-#include <vector>
-
-#include "include_gl.h"
-#include "color.h"
-#include "glm.h"
-#include "types.h"
+#include "ReferencePoint.hpp"
+#include "RGBColor.hpp"
+#include "glm.hpp"
 #include <QString>
 #include <QFile>
+#include <QDataStream>
 
 #define VOXEL_AIR 255
 
 extern RGBColor * global_palette;
 extern QString * palette_names;
 
-class VoxelFile;
-class ReferencePoint;
+class VoxelModel;
 class btCompoundShape;
-
-class VoxelModel
-{
-public:
-    VoxelFile * file;
-    GLuint value;
-    bool changed;
-
-    VoxelModel(VoxelFile * file);
-    ~VoxelModel();
-    vec3 get_ken_normal(int x, int y, int z);
-    void draw();
-    void draw_immediate(float alpha = 1.0f, bool offset = true);
-    void update(bool force = true);
-    ReferencePoint * get_point(const QString & name);
-};
-
-class ReferencePoint
-{
-public:
-    QString name;
-    qint32 x, y, z;
-
-    ReferencePoint(const QString & name, int x, int y, int z);
-    void translate();
-};
-
-typedef std::vector<ReferencePoint> ReferencePoints;
 
 class VoxelFile
 {
@@ -160,4 +127,4 @@ public:
     void reset_shape();
 };
 
-#endif // VOXIE_VOXEL_H
+#endif // VOXIE_VOXELFILE_HPP

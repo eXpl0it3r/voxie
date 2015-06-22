@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_COLLISION_H
-#define VOXIE_COLLISION_H
+#ifndef VOXIE_COLLISION_HPP
+#define VOXIE_COLLISION_HPP
 
-#include "glm.h"
+#include "glm.hpp"
 
 inline void test_ray_plane(const vec3 & pos1, const vec3 & dir,
                            const vec3 & pos2, const vec3 & normal,
@@ -75,4 +75,4 @@ inline bool test_aabb_frustum(const vec3 & min, const vec3 & max,
     return true;
 }
 
-#endif // VOXIE_COLLISION_H
+#endif // VOXIE_COLLISION_HPP

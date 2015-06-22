@@ -20,50 +20,51 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include <QWidget>
+#ifndef VOXIE_RANDOM_HPP
+#define VOXIE_RANDOM_HPP
 
-class MainWindow;
-class QSpinBox;
-class QComboBox;
-class QPushButton;
-class ReferencePoint;
+#define _USE_MATH_DEFINES
+#include <math.h>
+#include <stdlib.h>
 
-class ModelProperties : public QWidget
+#include "glm.hpp"
+
+inline float randf()
 {
-    Q_OBJECT
+    return float(rand()) / float(RAND_MAX);
+}
 
-public:
-    bool ignore_changes;
+inline float randrange(float a, float b)
+{
+    return a + (b - a) * randf();
+}
 
-    QComboBox * ref_list;
-    QPushButton * new_ref;
-    QPushButton * del_ref;
+inline float randrange(float a)
+{
+    return a * randf();
+}
 
-    QSpinBox * off_x;
-    QSpinBox * off_y;
-    QSpinBox * off_z;
+inline int randint(int a)
+{
+    return int(randrange(float(a)));
+}
 
-    QSpinBox * size_x;
-    QSpinBox * size_y;
-    QSpinBox * size_z;
+inline int randint(int a, int b)
+{
+    return int(randrange(float(a), float(b)));
+}
 
-    QSpinBox * ref_x;
-    QSpinBox * ref_y;
-    QSpinBox * ref_z;
+inline void vecrand(vec3 & a)
+{
+    // uniform spherical randomization
+    float f;
+    a.z = -(float)rand()/(float)(RAND_MAX>>1) + 1.0f;
+    float rad = rand()*(float(M_PI)*2.0f/float(RAND_MAX));
+    a.x = cos(rad);
+    a.y = sin(rad);
+    f = sqrtf(1.0f - a.z*a.z);
+    a.x *= f;
+    a.y *= f;
+}
 
-    MainWindow * window;
-
-    ModelProperties(MainWindow * parent);
-    QSpinBox * create_spinbox();
-    void update_refs();
-    void update_controls();
-    ReferencePoint * get_point();
-    QSize sizeHint() const;
-
-public slots:
-    void on_change();
-    void on_new_ref();
-    void on_del_ref();
-    void on_ref_name(const QString & text);
-    void on_ref_change();
-};
+#endif // VOXIE_RANDOM_HPP

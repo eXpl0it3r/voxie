@@ -20,12 +20,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "voxel.h"
-#include "voxeditor.h"
-#include "mainwindow.h"
-#include "draw.h"
-#include "modelproperties.h"
-#include "collision.h"
+#include "VoxelModel.hpp"
+#include "VoxelFile.hpp"
+#include "ReferencePoint.hpp"
+#include "VoxelEditor.hpp"
+#include "MainWindow.hpp"
+#include "draw.hpp"
+#include "ModelProperties.hpp"
+#include "collision.hpp"
 #include <btBulletDynamicsCommon.h>
 #include <LinearMath/btGeometryUtil.h>
 
@@ -39,6 +41,9 @@ THE SOFTWARE.
 #include <QRubberBand>
 #include <QApplication>
 #include <QClipboard>
+
+extern void set_window_file_path(QWidget * w, const QString & name);
+extern QString get_model_name(QWidget * parent, bool save);
 
 #define CAMERA_ROTATION_SPEED 0.25f
 #define CAMERA_MOVE_SPEED 1.0f

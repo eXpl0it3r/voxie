@@ -20,48 +20,48 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef VOXIE_MATHCOMMON_H
-#define VOXIE_MATHCOMMON_H
+#ifndef VOXIE_MATHCOMMON_HPP
+#define VOXIE_MATHCOMMON_HPP
 
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 
-#define PI_F (float)(M_PI)
+#define PI_F static_cast<float>(M_PI)
 
 inline float mod(float a, float b)
 {
-    return a - b * floor(a / b);
+    return a - b * std::floor(a / b);
 }
 
 inline float rad(float x)
 {
-    return x * float(PI_F/180.0f);
+    return x * static_cast<float>(PI_F/180.0f);
 }
 
 inline float deg(float x)
 {
-    return x * float(180.0f/PI_F);
+    return x * static_cast<float>(180.0f/PI_F);
 }
 
 inline float sin_deg(float x)
 {
-    return sin(rad(x));
+    return std::sin(rad(x));
 }
 
 inline float cos_deg(float x)
 {
-    return cos(rad(x));
+    return std::cos(rad(x));
 }
 
 inline float atan2_deg(float a, float b)
 {
-    return deg(atan2(a, b));
+    return deg(std::atan2(a, b));
 }
 
 inline int int_round(float d)
 {
-    int v = (int)floor(d + 0.5);
+    int v = static_cast<int>(std::floor(d + 0.5));
     if (d - v > 0.5)
         v++;
     return v;
@@ -86,9 +86,9 @@ inline T clamp(T val)
 template <class T>
 inline float distance(T x1, T y1, T x2, T y2)
 {
-    float x = float(x2 - x1);
-    float y = float(y2 - y1);
-    return sqrt(x*x + y*y);
+    float x = static_cast<float>(x2 - x1);
+    float y = static_cast<float>(y2 - y1);
+    return std::sqrt(x*x + y*y);
 }
 
 inline float circle_tangent_angle(float x1, float y1, float x2, float y2,
@@ -96,8 +96,8 @@ inline float circle_tangent_angle(float x1, float y1, float x2, float y2,
 {
     float dy = y1 - y2;
     float dx = x1 - x2;
-    float val = -asin(d / sqrt(dx*dx + dy*dy));
-    val += atan2(dy, dx) - PI_F * 0.5f;
+    float val = -std::asin(d / std::sqrt(dx*dx + dy*dy));
+    val += std::atan2(dy, dx) - PI_F * 0.5f;
     return deg(val);
 }
 
@@ -105,27 +105,27 @@ template <class T>
 inline float sin_wave(T v, float a = 0.0f, float b = 1.0f,
                       float length = 1.0f)
 {
-    float value = float(v);
+    float value = static_cast<float>(v);
     value /= length;
     value = mod(value, (2.0f * PI_F));
-    return (sin(value) + 1.0f) / 2.0f * (b - a) + a;
+    return (std::sin(value) + 1.0f) / 2.0f * (b - a) + a;
 }
 
 template <class T>
 inline float cos_wave(T v, float a = 0.0f, float b = 1.0f,
                       float length = 1.0f)
 {
-    float value = float(v);
+    float value = static_cast<float>(v);
     value /= length;
     value = mod(value, (2.0f * PI_F));
-    return (cos(value) + 1.0f) / 2.0f * (b - a) + a;
+    return (std::cos(value) + 1.0f) / 2.0f * (b - a) + a;
 }
 
 inline unsigned char mix_component(unsigned char a, unsigned char b,
                                    float mul)
 {
-    float v = float(a) + float(b - a) * mul;
-    return std::max<int>(0, std::min<int>(255, int(v)));
+    float v = static_cast<float>(a) + static_cast<float>(b - a) * mul;
+    return std::max<int>(0, std::min<int>(255, static_cast<int>(v)));
 }
 
 inline void mix_color(unsigned char r1, unsigned char g1, unsigned char b1,
@@ -140,7 +140,7 @@ inline void mix_color(unsigned char r1, unsigned char g1, unsigned char b1,
 
 inline void mul_component(unsigned char & v, float mul)
 {
-    v = std::max<int>(0, std::min<int>(255, int(float(v) * mul)));
+    v = std::max<int>(0, std::min<int>(255, static_cast<int>(static_cast<float>(v) * mul)));
 }
 
 inline void mul_color(unsigned char & r, unsigned char & g, unsigned char & b,
@@ -173,4 +173,4 @@ inline unsigned int prev_pow2(unsigned int x)
     return x - (x >> 1);
 }
 
-#endif // VOXIE_MATHCOMMON_H
+#endif // VOXIE_MATHCOMMON_HPP
