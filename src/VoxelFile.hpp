@@ -41,9 +41,9 @@ class btCompoundShape;
 class VoxelFile
 {
 public:
-    unsigned char * data;
     qint32 x_size, y_size, z_size;
     qint32 x_offset, y_offset, z_offset;
+    unsigned char * data;
     QString name;
     ReferencePoints points;
     btCompoundShape * shape;

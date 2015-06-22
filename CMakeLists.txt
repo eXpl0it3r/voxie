@@ -26,6 +26,11 @@ if(WIN32)
     endif()
 endif()
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -pedantic ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_C_FLAGS "-std=c99 -Wall -pedantic ${CMAKE_C_FLAGS}")
+endif()
+
 set(CMAKE_INSTALL_RPATH "\$ORIGIN")
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 

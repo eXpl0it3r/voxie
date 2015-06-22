@@ -47,7 +47,7 @@ QSpinBox * ModelProperties::create_spinbox()
 }
 
 ModelProperties::ModelProperties(MainWindow * parent)
-: QWidget(parent), window(parent), ignore_changes(true)
+: QWidget(parent), ignore_changes(true), window(parent)
 {
     QVBoxLayout * layout = new QVBoxLayout(this);
 

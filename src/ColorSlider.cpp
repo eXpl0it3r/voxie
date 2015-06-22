@@ -32,7 +32,8 @@ THE SOFTWARE.
 extern void draw_pointer(int x, int y, QPainter & painter);
 
 ColorSlider::ColorSlider(QWidget * parent)
-: QWidget(parent), pix(NULL)
+: QWidget(parent)
+, pix(NULL)
 {
     setFixedHeight(10);
 }
@@ -40,7 +41,7 @@ ColorSlider::ColorSlider(QWidget * parent)
 void ColorSlider::set(float v)
 {
     value = std::max(0.0f, std::min(1.0f, v));
-    ((PaletteEditor*)parentWidget())->color_space->set_hue(value);
+    static_cast<PaletteEditor*>(parentWidget())->color_space->set_hue(value);
     update();
 }
 

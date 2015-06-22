@@ -111,7 +111,7 @@ void PaletteGrid::mouseMoveEvent(QMouseEvent * event)
     QColor col2(col.r, col.g, col.b);
     mimeData->setColorData(col2);
     drag->setMimeData(mimeData);
-    Qt::DropAction dropAction = drag->exec(Qt::CopyAction);
+    //Qt::DropAction dropAction = drag->exec(Qt::CopyAction);
 }
 
 void PaletteGrid::dragEnterEvent(QDragEnterEvent * event)

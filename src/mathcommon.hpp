@@ -23,11 +23,11 @@ THE SOFTWARE.
 #ifndef VOXIE_MATHCOMMON_HPP
 #define VOXIE_MATHCOMMON_HPP
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <algorithm>
 
-#define PI_F static_cast<float>(M_PI)
+const float PI_F = 3.14159265359f;
+const float M_PI = 3.14159265359f;
 
 inline float mod(float a, float b)
 {

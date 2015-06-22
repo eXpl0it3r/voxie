@@ -62,8 +62,8 @@ extern QString get_model_name(QWidget * parent, bool save);
 SelectedVoxels VoxelEditor::copied_list;
 
 VoxelEditor::VoxelEditor(MainWindow * parent)
-: QGLWidget(parent->gl_format, parent, parent->shared_gl), scale(10.0f), 
-  rotate_x(-58.0f), rotate_z(-143.0f), window(parent), pos_arrows(0.05f)
+: QGLWidget(parent->gl_format, parent, parent->shared_gl), window(parent),
+  scale(10.0f), rotate_x(-58.0f), rotate_z(-143.0f), pos_arrows(0.05f)
 {
     setFocusPolicy(Qt::StrongFocus);
     setMouseTracking(true);

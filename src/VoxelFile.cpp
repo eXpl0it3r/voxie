@@ -101,27 +101,27 @@ unsigned char VoxelFile::get_closest_index(RGBColor c)
 }
 
 VoxelFile::VoxelFile()
-: data(NULL), model(NULL), shape(NULL)
+: data(NULL), shape(NULL), model(NULL)
 {
     load_palette();
 }
 
 VoxelFile::VoxelFile(QFile & fp)
-: data(NULL), model(NULL), shape(NULL)
+: data(NULL), shape(NULL), model(NULL)
 {
     load_palette();
     load_fp(fp);
 }
 
 VoxelFile::VoxelFile(const QString & filename)
-: data(NULL), model(NULL), shape(NULL)
+: data(NULL), shape(NULL), model(NULL)
 {
     load_palette();
     load(filename);
 }
 
 VoxelFile::VoxelFile(int x_size, int y_size, int z_size)
-: x_offset(0), y_offset(0), z_offset(0), data(NULL), model(NULL), shape(NULL)
+: x_offset(0), y_offset(0), z_offset(0), data(NULL), shape(NULL), model(NULL)
 {
     load_palette();
     reset(x_size, y_size, z_size);
