@@ -33,24 +33,26 @@ THE SOFTWARE.
 #include <QKeyEvent>
 #include <QLabel>
 
-extern void draw_pointer(int x, int y, QPainter & painter);
-extern QLabel * create_label(const QString & text);
+extern void draw_pointer(int x, int y, QPainter& painter);
+extern QLabel* create_label(const QString& text);
 
 // PaletteEditor
 
-QSpinBox * PaletteEditor::create_color_spinbox()
+QSpinBox* PaletteEditor::create_color_spinbox()
 {
-    QSpinBox * box = new QSpinBox(this);
+    QSpinBox* box = new QSpinBox(this);
     box->setMinimum(0);
     box->setMaximum(255);
     connect(box, SIGNAL(valueChanged(int)), this, SLOT(rgb_changed()));
     return box;
 }
 
-PaletteEditor::PaletteEditor(MainWindow * parent)
-: QWidget(parent), window(parent), ignore_rgb(false)
+PaletteEditor::PaletteEditor(MainWindow* parent)
+: QWidget(parent)
+, window(parent)
+, ignore_rgb(false)
 {
-    QVBoxLayout * layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
 
     color_space = new ColorSpace(this);
     color_slider = new ColorSlider(this);
@@ -61,7 +63,7 @@ PaletteEditor::PaletteEditor(MainWindow * parent)
     layout->addWidget(color_space);
     layout->addWidget(color_slider);
 
-    QHBoxLayout * rgb_layout = new QHBoxLayout;
+    QHBoxLayout* rgb_layout = new QHBoxLayout;
     rgb_layout->addWidget(create_label("RGB"));
     r_edit = create_color_spinbox();
     rgb_layout->addWidget(r_edit);
@@ -72,7 +74,7 @@ PaletteEditor::PaletteEditor(MainWindow * parent)
 
     layout->addLayout(rgb_layout);
 
-    QHBoxLayout * name_layout = new QHBoxLayout;
+    QHBoxLayout* name_layout = new QHBoxLayout;
     name_layout->addWidget(create_label("Name"));
     connect(name, SIGNAL(textEdited(QString)), this, SLOT(name_changed()));
     name_layout->addWidget(name);
@@ -84,7 +86,7 @@ PaletteEditor::PaletteEditor(MainWindow * parent)
     set_current();
 }
 
-RGBColor & PaletteEditor::get_palette_color()
+RGBColor& PaletteEditor::get_palette_color()
 {
     return global_palette[grid->palette_index];
 }
@@ -94,13 +96,14 @@ void PaletteEditor::set_current()
     if (!window->get_voxel())
         return;
     name->setText(palette_names[grid->palette_index]);
-    RGBColor & col = get_palette_color();
+    RGBColor& col = get_palette_color();
     QColor color(col.r, col.g, col.b);
     qreal h, s, v;
     color.getHsvF(&h, &s, &v);
     color_space->set_hsv(h, s, v);
     color_slider->set(h);
-    if (!ignore_rgb) {
+    if (!ignore_rgb)
+    {
         ignore_rgb = true;
         r_edit->setValue(col.r);
         g_edit->setValue(col.g);
@@ -112,10 +115,8 @@ void PaletteEditor::set_current()
 
 void PaletteEditor::set_palette()
 {
-    QColor col = QColor::fromHsvF(color_space->hue, 
-                                  color_space->sat, 
-                                  color_space->val);
-    RGBColor & pal = get_palette_color();
+    QColor col = QColor::fromHsvF(color_space->hue, color_space->sat, color_space->val);
+    RGBColor& pal = get_palette_color();
     pal.r = col.red();
     pal.g = col.green();
     pal.b = col.blue();
@@ -141,7 +142,7 @@ void PaletteEditor::rgb_changed()
 {
     if (ignore_rgb)
         return;
-    RGBColor & pal = get_palette_color();
+    RGBColor& pal = get_palette_color();
     pal.r = r_edit->value();
     pal.g = g_edit->value();
     pal.b = b_edit->value();

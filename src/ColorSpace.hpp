@@ -30,16 +30,16 @@ class ColorSpace : public QWidget
     Q_OBJECT
 
 public:
-    QPixmap * pix;
+    QPixmap* pix;
     float hue, sat, val;
 
-    ColorSpace(QWidget * parent = 0);
+    ColorSpace(QWidget* parent = 0);
     void set_hue(float h);
     void set_hsv(float h, float s, float v);
-    void set_mouse_pos(const QPoint & p);
-    void mousePressEvent(QMouseEvent * event);
+    void set_mouse_pos(const QPoint& p);
+    void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
-    void paintEvent(QPaintEvent * event);
+    void paintEvent(QPaintEvent* event);
 };
 
 #endif // VOXIE_COLORSPACE_HPP

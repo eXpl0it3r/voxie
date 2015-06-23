@@ -27,32 +27,38 @@ THE SOFTWARE.
 // RGBColor
 
 RGBColor::RGBColor()
-: r(0), g(0), b(0)
+: r(0)
+, g(0)
+, b(0)
 {
 }
 
 RGBColor::RGBColor(int r, int g, int b)
-: r(r), g(g), b(b)
+: r(r)
+, g(g)
+, b(b)
 {
 }
 
 RGBColor::RGBColor(unsigned char r, unsigned char g, unsigned char b)
-: r(r), g(g), b(b)
+: r(r)
+, g(g)
+, b(b)
 {
 }
 
 RGBColor::RGBColor(unsigned int v)
 {
-    RGBColor & other = (RGBColor&)v;
+    RGBColor& other = reinterpret_cast<RGBColor&>(v);
     r = other.r;
     g = other.g;
     b = other.b;
 }
 
 RGBColor::RGBColor(float r, float g, float b)
-: r((unsigned char)(r * 255.0f)),
-  g((unsigned char)(g * 255.0f)),
-  b((unsigned char)(b * 255.0f))
+: r(static_cast<unsigned char>(r * 255.0f))
+, g(static_cast<unsigned char>(g * 255.0f))
+, b(static_cast<unsigned char>(b * 255.0f))
 {
 }
 
@@ -63,7 +69,7 @@ void RGBColor::multiply(float mul)
     mul_component(b, mul);
 }
 
-void RGBColor::mix(const RGBColor & other, float mul)
+void RGBColor::mix(const RGBColor& other, float mul)
 {
     r = mix_component(r, other.r, mul);
     g = mix_component(g, other.g, mul);
@@ -77,22 +83,23 @@ void RGBColor::set_current(unsigned char a) const
 
 void RGBColor::set_current(float a) const
 {
-    set_current((unsigned char)(a * 255.0f));
+    set_current(static_cast<unsigned char>(a * 255.0f));
 }
 
 // color conversion
 
 void rgb_to_hsv(float r, float g, float b,
-                float & h, float & s, float & v)
+                float& h, float& s, float& v)
 {
     float min, max, delta;
-    min = std::min<float>(r, std::min<float>(g, b));
-    max = std::max<float>(r, std::max<float>(g, b));
+    min = std::min(r, std::min(g, b));
+    max = std::max(r, std::max(g, b));
     v = max;
     delta = max - min;
-    if(delta != 0)
+    if (delta != 0)
         s = delta / max;
-    else {
+    else
+    {
         // r = g = b = 0
         // s = 0, v is undefined
         h = 0.0f;
@@ -100,63 +107,68 @@ void rgb_to_hsv(float r, float g, float b,
         v = min;
         return;
     }
+
     if (r == max)
         h = (g - b) / delta; // between yellow & magenta
-    else if(g == max)
+    else if (g == max)
         h = 2 + (b - r) / delta; // between cyan & yellow
     else
         h = 4 + (r - g) / delta; // between magenta & cyan
     h *= 60; // degrees
-    if(h < 0)
+    if (h < 0)
         h += 360;
 }
 
 void hsv_to_rgb(float h, float s, float v,
-                       float & r, float & g, float & b)
+                float& r, float& g, float& b)
 {
-    if (s == 0) {
+    if (s == 0)
+    {
         // achromatic (grey)
         r = g = b = v;
         return;
     }
+
     int i;
     float f, p, q, t;
     h /= 60; // sector 0 to 5
-    i = int(floor(h));
+    i = static_cast<int>(std::floor(h));
     f = h - i; // factorial part of h
     p = v * (1 - s);
     q = v * (1 - s * f);
     t = v * (1 - s * ( 1 - f ));
-    switch (i) {
-        case 0:
-            r = v;
-            g = t;
-            b = p;
-            break;
-        case 1:
-            r = q;
-            g = v;
-            b = p;
-            break;
-        case 2:
-            r = p;
-            g = v;
-            b = t;
-            break;
-        case 3:
-            r = p;
-            g = q;
-            b = v;
-            break;
-        case 4:
-            r = t;
-            g = p;
-            b = v;
-            break;
-        case 5:
-            r = v;
-            g = p;
-            b = q;
-            break;
+
+    switch (i)
+    {
+    case 0:
+        r = v;
+        g = t;
+        b = p;
+        break;
+    case 1:
+        r = q;
+        g = v;
+        b = p;
+        break;
+    case 2:
+        r = p;
+        g = v;
+        b = t;
+        break;
+    case 3:
+        r = p;
+        g = q;
+        b = v;
+        break;
+    case 4:
+        r = t;
+        g = p;
+        b = v;
+        break;
+    case 5:
+        r = v;
+        g = p;
+        b = q;
+        break;
     }
 }

@@ -39,7 +39,7 @@ public:
     RGBColor(unsigned int v);
     RGBColor(float r, float g, float b);
     void multiply(float mul);
-    void mix(const RGBColor & other, float mul);
+    void mix(const RGBColor& other, float mul);
     void set_current(unsigned char alpha = 255) const;
     void set_current(float alpha) const;
 };
@@ -55,16 +55,16 @@ const RGBColor white_color(255, 255, 255);
 const RGBColor smoke_color(30, 30, 30);
 const RGBColor fire_color(255, 119, 0);
 
-const RGBColor & get_team_color(int team);
+const RGBColor& get_team_color(int team);
 
 // r, g, b values are from 0 to 1
 // h = [0, 360], s = [0, 1], v = [0, 1]
 // if s == 0, then h = -1 (undefined)
 
 void rgb_to_hsv(float r, float g, float b,
-                float & h, float & s, float & v);
+                float& h, float& s, float& v);
 
 void hsv_to_rgb(float h, float s, float v,
-                float & r, float & g, float & b);
+                float& r, float& g, float& b);
 
 #endif // VOXIE_RGBCOLOR_HPP

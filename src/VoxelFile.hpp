@@ -32,8 +32,8 @@ THE SOFTWARE.
 
 #define VOXEL_AIR 255
 
-extern RGBColor * global_palette;
-extern QString * palette_names;
+extern RGBColor* global_palette;
+extern QString* palette_names;
 
 class VoxelModel;
 class btCompoundShape;
@@ -43,39 +43,39 @@ class VoxelFile
 public:
     qint32 x_size, y_size, z_size;
     qint32 x_offset, y_offset, z_offset;
-    unsigned char * data;
+    unsigned char* data;
     QString name;
     ReferencePoints points;
-    btCompoundShape * shape;
+    btCompoundShape* shape;
     vec3 min, max;
 
     VoxelFile();
-    VoxelFile(const QString & filename);
-    VoxelFile(QFile & fp);
+    VoxelFile(const QString& filename);
+    VoxelFile(QFile& fp);
     VoxelFile(int x_size, int y_size, int z_size);
     ~VoxelFile();
     static void load_palette();
     static void save_palette();
     static unsigned char get_closest_index(RGBColor c);
-    void load_fp(QFile & fp);
-    bool load(const QString & filename);
-    void save(const QString & filename);
-    void save_fp(QFile & fp);
+    void load_fp(QFile& fp);
+    bool load(const QString& filename);
+    void save(const QString& filename);
+    void save_fp(QFile& fp);
     void reset(int x, int y, int z);
-    void add_point(const QString & name, int x, int y, int z);
+    void add_point(const QString& name, int x, int y, int z);
     void remove_point(size_t i);
-    ReferencePoint * get_point(const QString & name);
-    ReferencePoint * get_point(int i);
+    ReferencePoint* get_point(const QString& name);
+    ReferencePoint* get_point(int i);
     void resize(int x1, int y1, int z1, int x_size, int y_size, int z_size);
     void scale(float sx, float sy, float sz);
     void set_offset(int x, int y, int z);
     void optimize();
     void rotate();
-    void clone(VoxelFile & other);
+    void clone(VoxelFile& other);
     vec3 get_min();
     vec3 get_max();
 
-    inline unsigned char & get(int x, int y, int z)
+    inline unsigned char& get(int x, int y, int z)
     {
         return data[z + y * z_size + x * z_size * y_size];
     }
@@ -87,7 +87,7 @@ public:
         return get(x, y, z);
     }
 
-    inline const RGBColor & get_color(int x, int y, int z)
+    inline const RGBColor& get_color(int x, int y, int z)
     {
         return global_palette[get(x, y, z)];
     }
@@ -120,10 +120,10 @@ public:
         get(x, y, z) = i;
     }
 
-    VoxelModel * model;
-    VoxelModel * get_model();
+    VoxelModel* model;
+    VoxelModel* get_model();
     void update_model();
-    btCompoundShape * get_shape();
+    btCompoundShape* get_shape();
     void reset_shape();
 };
 

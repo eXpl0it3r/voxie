@@ -30,25 +30,27 @@ THE SOFTWARE.
 void setup_lighting();
 
 void draw_rounded_rect(float x1, float y1, float x2, float y2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a,
-    float radius = 5.0f);
+                       unsigned char r, unsigned char g, unsigned char b, unsigned char a,
+                       float radius = 5.0f);
 
 void draw_rounded_rect(int x1, int y1, int x2, int y2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a,
-    float radius = 5.0f);
+                       unsigned char r, unsigned char g, unsigned char b, unsigned char a,
+                       float radius = 5.0f);
 
 void draw_rounded_rect(float x1, float y1, float x2, float y2,
-    const RGBColor & color, unsigned char a, float radius = 5.0f);
+                       const RGBColor& color, unsigned char a,
+                       float radius = 5.0f);
 
 void draw_rounded_rect(int x1, int y1, int x2, int y2,
-    const RGBColor & color, unsigned char a, float radius = 5.0f);
+                       const RGBColor& color, unsigned char a,
+                       float radius = 5.0f);
 
 void draw_pointer(float x, float y);
 void draw_pointer(float x, float y,
                   unsigned char r, unsigned char g, unsigned char b);
 
 inline void draw_rect(float x1, float y1, float x2, float y2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+                      unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     glColor4ub(r, g, b, a);
     glBegin(GL_QUADS);
@@ -60,7 +62,7 @@ inline void draw_rect(float x1, float y1, float x2, float y2,
 }
 
 inline void draw_rect(float x1, float y1, float z1, float x2, float y2, float z2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+                      unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     glColor4ub(r, g, b, a);
     glBegin(GL_QUADS);
@@ -72,7 +74,7 @@ inline void draw_rect(float x1, float y1, float z1, float x2, float y2, float z2
 }
 
 inline void draw_rect(int x1, int y1, int x2, int y2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+                      unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     glColor4ub(r, g, b, a);
     glBegin(GL_QUADS);
@@ -84,7 +86,7 @@ inline void draw_rect(int x1, int y1, int x2, int y2,
 }
 
 inline void draw_rect_outline(float x1, float y1, float x2, float y2, float size,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+                              unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     draw_rect(x1, y1, x1 + size, y2, r, g, b, a);
     draw_rect(x2 - size, y1, x2, y2, r, g, b, a);
@@ -93,16 +95,14 @@ inline void draw_rect_outline(float x1, float y1, float x2, float y2, float size
 }
 
 void draw_cube(float x1, float y1, float z1, float x2, float y2, float z2,
-               unsigned char r, unsigned char g, unsigned char b,
-               unsigned char a);
+               unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
 void draw_cube(float x, float y, float z, float size,
-               unsigned char r, unsigned char g, unsigned char b,
-               unsigned char a);
+               unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
-inline void draw_wireframe_cube(float x1, float y1, float z1, float x2,
-    float y2, float z2, unsigned char r, unsigned char g, unsigned char b,
-    unsigned char a)
+inline void draw_wireframe_cube(float x1, float y1, float z1,
+                                float x2, float y2, float z2,
+                                unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     glLineWidth(1.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -111,7 +111,7 @@ inline void draw_wireframe_cube(float x1, float y1, float z1, float x2,
 }
 
 inline void draw_wireframe_cube(float x, float y, float z, float size,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+                                unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     float half_size = size * 0.5f;
     draw_wireframe_cube(x - half_size, y - half_size, z - half_size,
@@ -121,6 +121,6 @@ inline void draw_wireframe_cube(float x, float y, float z, float size,
 
 void setup_opengl();
 
-void draw_cone(const vec3 & a, const vec3 & b, float rd, int n = 8);
+void draw_cone(const vec3& a, const vec3& b, float rd, int n = 8);
 
 #endif // VOXIE_DRAW_HPP

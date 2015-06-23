@@ -29,23 +29,26 @@ THE SOFTWARE.
 #include <QMimeData>
 #include <QMouseEvent>
 
-PaletteGrid::PaletteGrid(MainWindow * parent)
-: QWidget(parent), window(parent), palette_index(0)
+PaletteGrid::PaletteGrid(MainWindow* parent)
+: QWidget(parent)
+, window(parent)
+, palette_index(0)
 {
     setFixedSize(192, 192);
     setAcceptDrops(true);
 }
 
-void PaletteGrid::paintEvent(QPaintEvent * event)
+void PaletteGrid::paintEvent(QPaintEvent* event)
 {
-    VoxelFile * voxel = window->get_voxel();
+    VoxelFile* voxel = window->get_voxel();
 
     QPainter p(this);
 
     int x_size = width() / 8;
     int y_size = height() / 8;
 
-    for (int i = 0; i <= VOXEL_AIR; i++) {
+    for (int i = 0; i <= VOXEL_AIR; i++)
+    {
         int x = i % 8;
         int y = i / 8;
         int x1 = x * x_size;
@@ -53,15 +56,17 @@ void PaletteGrid::paintEvent(QPaintEvent * event)
         unsigned char r, g, b;
         if (i == VOXEL_AIR || voxel == NULL)
             r = g = b = 20;
-        else {
-            RGBColor & color = global_palette[i];
+        else
+        {
+            RGBColor& color = global_palette[i];
             r = color.r;
             g = color.g;
             b = color.b;
         }
 
         const int outline = 1;
-        if (palette_index == i) {
+        if (palette_index == i)
+        {
             p.fillRect(x1, y1, x_size, y_size, Qt::white);
             p.fillRect(x1 + outline, y1 + outline, 
                        x_size - outline * 2, y_size - outline * 2,
@@ -69,13 +74,15 @@ void PaletteGrid::paintEvent(QPaintEvent * event)
             p.fillRect(x1 + outline * 2, y1 + outline * 2, 
                        x_size - outline * 4, y_size - outline * 4, 
                        QColor(r, g, b));
-        } else {
+        }
+        else
+        {
             p.fillRect(x1, y1, x_size, y_size, QColor(r, g, b));
         }
     }
 }
 
-int PaletteGrid::get_index(const QPoint & p)
+int PaletteGrid::get_index(const QPoint& p)
 {
     int x_size = width() / 8;
     int y_size = height() / 8;
@@ -84,46 +91,45 @@ int PaletteGrid::get_index(const QPoint & p)
     return p_x + p_y * 8;
 }
 
-void PaletteGrid::mousePressEvent(QMouseEvent * event)
+void PaletteGrid::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() != Qt::LeftButton)
         return;
-    const QPoint & p = event->pos();
+    const QPoint& p = event->pos();
     drag_start = p;
     palette_index = get_index(p);
-    ((PaletteEditor*)parentWidget())->set_current();
+    static_cast<PaletteEditor*>(parentWidget())->set_current();
     update();
 }
 
-void PaletteGrid::mouseMoveEvent(QMouseEvent * event)
+void PaletteGrid::mouseMoveEvent(QMouseEvent* event)
 {
-    VoxelFile * voxel = window->get_voxel();
+    VoxelFile* voxel = window->get_voxel();
     if (!voxel)
         return;
     if (!(event->buttons() & Qt::LeftButton))
         return;
-     if ((event->pos() - drag_start).manhattanLength()
-          < QApplication::startDragDistance())
+     if ((event->pos() - drag_start).manhattanLength() < QApplication::startDragDistance())
          return;
-    QDrag *drag = new QDrag(this);
-    QMimeData *mimeData = new QMimeData;
-    RGBColor & col = global_palette[palette_index];
+    QDrag* drag = new QDrag(this);
+    QMimeData* mimeData = new QMimeData;
+    RGBColor& col = global_palette[palette_index];
     QColor col2(col.r, col.g, col.b);
     mimeData->setColorData(col2);
     drag->setMimeData(mimeData);
     //Qt::DropAction dropAction = drag->exec(Qt::CopyAction);
 }
 
-void PaletteGrid::dragEnterEvent(QDragEnterEvent * event)
+void PaletteGrid::dragEnterEvent(QDragEnterEvent* event)
 {
     if (!event->mimeData()->hasColor())
         return;
     event->acceptProposedAction();
 }
 
-void PaletteGrid::dropEvent(QDropEvent * event)
+void PaletteGrid::dropEvent(QDropEvent* event)
 {
-    VoxelFile * voxel = window->get_voxel();
+    VoxelFile* voxel = window->get_voxel();
     if (!voxel)
         return;
     int r, g, b;

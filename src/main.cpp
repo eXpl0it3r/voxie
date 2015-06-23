@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include <QMdiSubWindow>
 #include <QActionGroup>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QCoreApplication::addLibraryPath("plugins");
     QCoreApplication::setApplicationName("Voxie");

@@ -24,10 +24,11 @@ THE SOFTWARE.
 #include "collision.hpp"
 #include "draw.hpp"
 
-extern btTransform get_pos_trans(const vec3 & p);
+extern btTransform get_pos_trans(const vec3& p);
 
 PositionArrows::PositionArrows(float scale)
-: pan(NONE_CONE), shape(NULL)
+: pan(NONE_CONE)
+, shape(NULL)
 {
     set_scale(scale);
 }
@@ -40,17 +41,19 @@ PositionArrows::~PositionArrows()
 void PositionArrows::set_scale(float value)
 {
     scale = value;
-    if (shape != NULL) {
-        for (int i = 0; i < shape->getNumChildShapes(); i++) {
+    if (shape != NULL)
+    {
+        for (int i = 0; i < shape->getNumChildShapes(); i++)
+        {
             delete shape->getChildShape(i);
         }
         delete shape;
     }
 
-    btConeShapeX * x_cone = new btConeShapeX(CONE_RADIUS, CONE_HEIGHT);
-    btConeShape * y_cone = new btConeShape(CONE_RADIUS, CONE_HEIGHT);
-    btConeShapeZ * z_cone = new btConeShapeZ(CONE_RADIUS, CONE_HEIGHT);
-    btCompoundShape * shape = new btCompoundShape();
+    btConeShapeX* x_cone = new btConeShapeX(CONE_RADIUS, CONE_HEIGHT);
+    btConeShape* y_cone = new btConeShape(CONE_RADIUS, CONE_HEIGHT);
+    btConeShapeZ* z_cone = new btConeShapeZ(CONE_RADIUS, CONE_HEIGHT);
+    btCompoundShape* shape = new btCompoundShape();
     shape->addChildShape(get_pos_trans(vec3(CONE_START, 0.0f, 0.0f)), x_cone);
     shape->addChildShape(get_pos_trans(vec3(0.0f, CONE_START, 0.0f)), y_cone);
     shape->addChildShape(get_pos_trans(vec3(0.0f, 0.0f, CONE_START)), z_cone);
@@ -58,48 +61,51 @@ void PositionArrows::set_scale(float value)
     this->shape = shape;
 }
 
-void PositionArrows::update(const vec3 & ray_pos, const vec3 & ray_dir)
+void PositionArrows::update(const vec3& ray_pos, const vec3& ray_dir)
 {
     test_ray_plane(ray_pos, ray_dir, pos, normal, last);
 }
 
-void PositionArrows::on_mouse_press(const vec3 & ray_pos, const vec3 & ray_dir)
+void PositionArrows::on_mouse_press(const vec3& ray_pos, const vec3& ray_dir)
 {
     pan = ray_test(ray_pos, ray_dir);
-    switch (pan) {
-        case X_CONE:
-            normal = vec3(0.0f, -ray_dir.y, -ray_dir.z);
-            break;
-        case Y_CONE:
-            normal = vec3(-ray_dir.x, 0.0f, -ray_dir.z);
-            break;
-        case Z_CONE:
-            normal = vec3(-ray_dir.x, -ray_dir.y, 0.0f);
-            break;
+    switch (pan)
+    {
+    case X_CONE:
+        normal = vec3(0.0f, -ray_dir.y, -ray_dir.z);
+        break;
+    case Y_CONE:
+        normal = vec3(-ray_dir.x, 0.0f, -ray_dir.z);
+        break;
+    case Z_CONE:
+        normal = vec3(-ray_dir.x, -ray_dir.y, 0.0f);
+        break;
     }
-    if (pan != NONE_CONE) {
+    if (pan != NONE_CONE)
+    {
         update(ray_pos, ray_dir);
         return;
     }
 }
 
-void PositionArrows::on_mouse_move(const vec3 & ray_pos, const vec3 & ray_dir)
+void PositionArrows::on_mouse_move(const vec3& ray_pos, const vec3& ray_dir)
 {
     if (pan == NONE_CONE)
         return;
     vec3 old_pan = last;
     update(ray_pos, ray_dir);
     vec3 new_add = last - old_pan;
-    switch (pan) {
-        case X_CONE:
-            new_add = vec3(new_add.x, 0.0f, 0.0f);
-            break;
-        case Y_CONE:
-            new_add = vec3(0.0f, new_add.y, 0.0f);
-            break;
-        case Z_CONE:
-            new_add = vec3(0.0f, 0.0f, new_add.z);
-            break;
+    switch (pan)
+    {
+    case X_CONE:
+        new_add = vec3(new_add.x, 0.0f, 0.0f);
+        break;
+    case Y_CONE:
+        new_add = vec3(0.0f, new_add.y, 0.0f);
+        break;
+    case Z_CONE:
+        new_add = vec3(0.0f, 0.0f, new_add.z);
+        break;
     }
     add += new_add;
 }
@@ -109,7 +115,7 @@ void PositionArrows::on_mouse_release()
     pan = NONE_CONE;
 }
 
-void PositionArrows::set_pos(const vec3 & p)
+void PositionArrows::set_pos(const vec3& p)
 {
     pos = p;
 }
@@ -121,16 +127,17 @@ vec3 PositionArrows::get(float grid)
         p = add;
     else
         p = glm::round(add / grid) * grid;
-    if (p != vec3(0.0f)) {
+    if (p != vec3(0.0f))
+    {
         add = vec3(0.0f);
         pos += p;
     }
     return p;
 }
 
-int PositionArrows::ray_test(const vec3 & ray_pos, const vec3 & ray_dir)
+int PositionArrows::ray_test(const vec3& ray_pos, const vec3& ray_dir)
 {
-    static btCollisionObject * obj = new btCollisionObject();
+    static btCollisionObject* obj = new btCollisionObject();
     obj->setCollisionShape(shape);
 
     btTransform obj_trans = get_pos_trans(pos);
@@ -147,8 +154,7 @@ int PositionArrows::ray_test(const vec3 & ray_pos, const vec3 & ray_dir)
 
     ArrowResultCallback callback(from_vec, to_vec);
 
-    btCollisionWorld::rayTestSingle(from_trans, to_trans, obj, shape, obj_trans,
-        callback);
+    btCollisionWorld::rayTestSingle(from_trans, to_trans, obj, shape, obj_trans, callback);
 
     return callback.index;
 }
@@ -169,16 +175,17 @@ void PositionArrows::draw()
     int z_g = GREEN_G;
     int z_b = GREEN_B;
 
-    switch (pan) {
-        case X_CONE:
-            x_r = x_g = x_b = 255;
-            break;
-        case Y_CONE:
-            y_r = y_g = y_b = 255;
-            break;
-        case Z_CONE:
-            z_r = z_g = z_b = 255;
-            break;
+    switch (pan)
+    {
+    case X_CONE:
+        x_r = x_g = x_b = 255;
+        break;
+    case Y_CONE:
+        y_r = y_g = y_b = 255;
+        break;
+    case Z_CONE:
+        z_r = z_g = z_b = 255;
+        break;
     }
 
     glPushMatrix();
@@ -189,32 +196,29 @@ void PositionArrows::draw()
     glBegin(GL_LINES);
 
     glColor4ub(x_r, x_g, x_b, 255);
-    glVertex3f(0, 0.0f, 0.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(LINE_LEN, 0.0f, 0.0f);
 
     glColor4ub(y_r, y_g, y_b, 255);
-    glVertex3f(0.0f, 0, 0.0f);
+    glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, LINE_LEN, 0.0f);
 
     glColor4ub(z_r, z_g, z_b, 255);
-    glVertex3f(0.0f, 0.0f, 0);
+    glVertex3f(0.0f, 0.0f, 0.0f);
     glVertex3f(0.0f, 0.0f, LINE_LEN);
     glEnd();
 
     glColor4ub(x_r, x_g, x_b, 255);
     vec3 x_cone(LINE_LEN, 0.0f, 0.0f);
-    draw_cone(x_cone, x_cone + vec3(CONE_HEIGHT, 0.0f, 0.0f), CONE_RADIUS,
-              cone_n);
+    draw_cone(x_cone, x_cone + vec3(CONE_HEIGHT, 0.0f, 0.0f), CONE_RADIUS, cone_n);
 
     glColor4ub(y_r, y_g, y_b, 255);
     vec3 y_cone(0.0f, LINE_LEN, 0.0f);
-    draw_cone(y_cone, y_cone + vec3(0.0f, CONE_HEIGHT, 0.0f), CONE_RADIUS,
-              cone_n);
+    draw_cone(y_cone, y_cone + vec3(0.0f, CONE_HEIGHT, 0.0f), CONE_RADIUS, cone_n);
 
     glColor4ub(z_r, z_g, z_b, 255);
     vec3 z_cone(0.0f, 0.0f, LINE_LEN);
-    draw_cone(z_cone, z_cone + vec3(0.0f, 0.0f, CONE_HEIGHT), CONE_RADIUS,
-              cone_n);
+    draw_cone(z_cone, z_cone + vec3(0.0f, 0.0f, CONE_HEIGHT), CONE_RADIUS, cone_n);
 
     glPopMatrix();
 }

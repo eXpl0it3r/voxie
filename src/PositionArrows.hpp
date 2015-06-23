@@ -57,18 +57,18 @@ public:
     int pan;
     vec3 normal, pos, last, add;
 
-    btCompoundShape * shape;
+    btCompoundShape* shape;
 
     PositionArrows(float scale);
     ~PositionArrows();
     void set_scale(float scale);
-    void set_pos(const vec3 & p);
-    void on_mouse_press(const vec3 & ray_pos, const vec3 & ray_dir);
-    void on_mouse_move(const vec3 & ray_pos, const vec3 & ray_dir);
+    void set_pos(const vec3& p);
+    void on_mouse_press(const vec3& ray_pos, const vec3& ray_dir);
+    void on_mouse_move(const vec3& ray_pos, const vec3& ray_dir);
     void on_mouse_release();
-    void update(const vec3 & ray_pos, const vec3 & ray_dir);
+    void update(const vec3& ray_pos, const vec3& ray_dir);
     vec3 get(float grid);
-    int ray_test(const vec3 & pos, const vec3 & dir);
+    int ray_test(const vec3& pos, const vec3& dir);
     void draw();
 };
 
@@ -76,16 +76,16 @@ struct ArrowResultCallback : public btCollisionWorld::ClosestRayResultCallback
 {
     int index;
 
-    ArrowResultCallback(const btVector3 & a, const btVector3 & b)
-    : btCollisionWorld::ClosestRayResultCallback(a, b), index(NONE_CONE)
+    ArrowResultCallback(const btVector3& a, const btVector3& b)
+    : btCollisionWorld::ClosestRayResultCallback(a, b)
+    , index(NONE_CONE)
     {
     }
 
-    btScalar addSingleResult(btCollisionWorld::LocalRayResult & r, bool n)
+    btScalar addSingleResult(btCollisionWorld::LocalRayResult& r, bool n)
     {
         index = r.m_localShapeInfo->m_triangleIndex;
-        return btCollisionWorld::ClosestRayResultCallback::addSingleResult(
-            r, n);
+        return btCollisionWorld::ClosestRayResultCallback::addSingleResult(r, n);
     }
 };
 

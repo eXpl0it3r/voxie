@@ -25,12 +25,15 @@ THE SOFTWARE.
 
 // ReferencePoint
 
-ReferencePoint::ReferencePoint(const QString & name,int x, int y, int z)
-: name(name), x(x), y(y), z(z)
+ReferencePoint::ReferencePoint(const QString& name, int x, int y, int z)
+: name(name)
+, x(x)
+, y(y)
+, z(z)
 {
 
 }
 void ReferencePoint::translate()
 {
-    glTranslatef(float(x) + 0.01f, float(y) + 0.01f, float(z) + 0.01f);
+    glTranslatef(static_cast<float>(x) + 0.01f, static_cast<float>(y) + 0.01f, static_cast<float>(z) + 0.01f);
 }

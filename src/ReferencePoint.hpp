@@ -33,7 +33,7 @@ public:
     QString name;
     qint32 x, y, z;
 
-    ReferencePoint(const QString & name, int x, int y, int z);
+    ReferencePoint(const QString& name, int x, int y, int z);
     void translate();
 };
 

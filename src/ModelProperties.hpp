@@ -38,36 +38,36 @@ class ModelProperties : public QWidget
 public:
     bool ignore_changes;
 
-    QComboBox * ref_list;
-    QPushButton * new_ref;
-    QPushButton * del_ref;
+    QComboBox* ref_list;
+    QPushButton* new_ref;
+    QPushButton* del_ref;
 
-    QSpinBox * off_x;
-    QSpinBox * off_y;
-    QSpinBox * off_z;
+    QSpinBox* off_x;
+    QSpinBox* off_y;
+    QSpinBox* off_z;
 
-    QSpinBox * size_x;
-    QSpinBox * size_y;
-    QSpinBox * size_z;
+    QSpinBox* size_x;
+    QSpinBox* size_y;
+    QSpinBox* size_z;
 
-    QSpinBox * ref_x;
-    QSpinBox * ref_y;
-    QSpinBox * ref_z;
+    QSpinBox* ref_x;
+    QSpinBox* ref_y;
+    QSpinBox* ref_z;
 
-    MainWindow * window;
+    MainWindow* window;
 
-    ModelProperties(MainWindow * parent);
-    QSpinBox * create_spinbox();
+    ModelProperties(MainWindow* parent);
+    QSpinBox* create_spinbox();
     void update_refs();
     void update_controls();
-    ReferencePoint * get_point();
+    ReferencePoint* get_point();
     QSize sizeHint() const;
 
 public slots:
     void on_change();
     void on_new_ref();
     void on_del_ref();
-    void on_ref_name(const QString & text);
+    void on_ref_name(const QString& text);
     void on_ref_change();
 };
 

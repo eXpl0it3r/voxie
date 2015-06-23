@@ -28,10 +28,12 @@ THE SOFTWARE.
 #include <QMouseEvent>
 #include <QPainter>
 
-extern void draw_pointer(int x, int y, QPainter & painter);
+extern void draw_pointer(int x, int y, QPainter& painter);
 
-ColorSpace::ColorSpace(QWidget * parent)
-: QWidget(parent), pix(NULL), hue(-1.0f)
+ColorSpace::ColorSpace(QWidget* parent)
+: QWidget(parent)
+, pix(NULL)
+, hue(-1.0f)
 {
     set_hsv(0.5f, 0.5f, 0.5f);
 }
@@ -46,7 +48,8 @@ void ColorSpace::set_hsv(float h, float s, float v)
     h = std::max(0.0f, std::min(1.0f, h));
     s = std::max(0.0f, std::min(1.0f, s));
     v = std::max(0.0f, std::min(1.0f, v));
-    if (hue != h) {
+    if (hue != h)
+    {
         hue = h;
         delete pix;
         pix = NULL;
@@ -56,15 +59,15 @@ void ColorSpace::set_hsv(float h, float s, float v)
     update();
 }
 
-void ColorSpace::set_mouse_pos(const QPoint & p)
+void ColorSpace::set_mouse_pos(const QPoint& p)
 {
-    float s = float(p.x()) / float(width());
-    float v = 1.0f - float(p.y()) / float(height());
+    float s = static_cast<float>(p.x()) / static_cast<float>(width());
+    float v = 1.0f - static_cast<float>(p.y()) / static_cast<float>(height());
     set_hsv(hue, s, v);
-    ((PaletteEditor*)parentWidget())->set_palette();
+    static_cast<PaletteEditor*>(parentWidget())->set_palette();
 }
 
-void ColorSpace::mousePressEvent(QMouseEvent * event)
+void ColorSpace::mousePressEvent(QMouseEvent* event)
 {
     if (!(event->buttons() & Qt::LeftButton))
         return;
@@ -78,22 +81,25 @@ void ColorSpace::mouseMoveEvent(QMouseEvent* event)
     set_mouse_pos(event->pos());
 }
 
-void ColorSpace::paintEvent(QPaintEvent * event)
+void ColorSpace::paintEvent(QPaintEvent* event)
 {
     int w = width();
     int h = height();
 
-    if (!pix || pix->height() != h || pix->width() != w) {
+    if (!pix || pix->height() != h || pix->width() != w)
+    {
         delete pix;
         QImage img(w, h, QImage::Format_RGB32);
-        unsigned int * pixel = (unsigned int*)img.scanLine(0);
-        for (int y = 0; y < h; y++) {
-            const unsigned int * end = pixel + w;
+        unsigned int* pixel = reinterpret_cast<unsigned int*>(img.scanLine(0));
+        for (int y = 0; y < h; y++)
+        {
+            const unsigned int* end = pixel + w;
             int x = 0;
-            while (pixel < end) {
+            while (pixel < end)
+            {
                 QColor c;
-                float sat = float(x) / float(w);
-                float val = 1.0f - float(y) / float(h);
+                float sat = static_cast<float>(x) / static_cast<float>(w);
+                float val = 1.0f - static_cast<float>(y) / static_cast<float>(h);
                 c.setHsvF(hue, sat, val);
                 *pixel = c.rgb();
                 pixel++;
@@ -106,7 +112,7 @@ void ColorSpace::paintEvent(QPaintEvent * event)
     QPainter p(this);
     p.drawPixmap(0, 0, *pix);
 
-    int p_x = int(sat * w);
-    int p_y = int((1.0f - val) * h);
+    int p_x = static_cast<int>(sat * w);
+    int p_y = static_cast<int>((1.0f - val) * h);
     draw_pointer(p_x, p_y, p);
 }

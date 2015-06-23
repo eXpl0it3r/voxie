@@ -23,6 +23,8 @@ THE SOFTWARE.
 #ifndef VOXIE_MAINWINDOW_HPP
 #define VOXIE_MAINWINDOW_HPP
 
+#include <string>
+
 #include "glm.hpp"
 
 #include <QMainWindow>
@@ -54,50 +56,50 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    PaletteEditor * palette_editor;
-    ModelProperties * model_properties;
-    QActionGroup * tool_group;
+    PaletteEditor* palette_editor;
+    ModelProperties* model_properties;
+    QActionGroup* tool_group;
     QGLFormat gl_format;
-    QGLWidget * shared_gl;
+    QGLWidget* shared_gl;
 
-    QMdiArea * mdi;
-    QMenu * file_menu;
-    QMenu * model_menu;
+    QMdiArea* mdi;
+    QMenu* file_menu;
+    QMenu* model_menu;
 
-    QAction * new_model_action;
-    QAction * open_model_action;
-    QAction * clone_model_action;
-    QAction * save_action;
-    QAction * save_as_action;
-    QAction * exit_action;
+    QAction* new_model_action;
+    QAction* open_model_action;
+    QAction* clone_model_action;
+    QAction* save_action;
+    QAction* save_as_action;
+    QAction* exit_action;
 
-    QAction * double_size_action;
-    QAction * half_size_action;
-    QAction * optimize_action;
-    QAction * rotate_action;
+    QAction* double_size_action;
+    QAction* half_size_action;
+    QAction* optimize_action;
+    QAction* rotate_action;
 
-    QDockWidget * model_dock;
-    QDockWidget * palette_dock;
+    QDockWidget* model_dock;
+    QDockWidget* palette_dock;
 
-    MainWindow(QWidget * parent = 0);
-    void closeEvent(QCloseEvent * event);
+    MainWindow(QWidget* parent = 0);
+    void closeEvent(QCloseEvent* event);
     void create_menus();
     void create_actions();
-    VoxelFile * get_voxel();
+    VoxelFile* get_voxel();
     int get_palette_index();
     void set_palette_index(int i);
     int get_tool();
-    QWidget * get_current_window();
-    VoxelEditor * get_voxel_editor();
-    bool test_current_window(QWidget * other);
+    QWidget* get_current_window();
+    VoxelEditor* get_voxel_editor();
+    bool test_current_window(QWidget* other);
     ~MainWindow();
 
     void model_changed();
-    void set_status(const std::string & text);
+    void set_status(const std::string& text);
     void set_animation_frame(bool forward);
 
 private slots:
-    void on_window_change(QMdiSubWindow * w);
+    void on_window_change(QMdiSubWindow* w);
 
     void new_model();
     void open_model();

@@ -39,22 +39,22 @@ class PaletteEditor : public QWidget
     Q_OBJECT
 
 public:
-    MainWindow * window;
-    PaletteGrid * grid;
-    ColorSpace * color_space;
-    ColorSlider * color_slider;
-    QSpinBox * r_edit;
-    QSpinBox * g_edit;
-    QSpinBox * b_edit;
-    QLineEdit * name;
+    MainWindow* window;
+    PaletteGrid* grid;
+    ColorSpace* color_space;
+    ColorSlider* color_slider;
+    QSpinBox* r_edit;
+    QSpinBox* g_edit;
+    QSpinBox* b_edit;
+    QLineEdit* name;
     bool ignore_rgb;
 
-    PaletteEditor(MainWindow * parent);
+    PaletteEditor(MainWindow* parent);
     int get_palette_index();
     void set_current();
     void set_palette();
-    RGBColor & get_palette_color();
-    QSpinBox * create_color_spinbox();
+    RGBColor& get_palette_color();
+    QSpinBox* create_color_spinbox();
     void reset_palette();
 
 public slots:

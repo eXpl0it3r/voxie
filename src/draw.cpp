@@ -48,8 +48,7 @@ void setup_lighting()
 }
 
 void draw_cube(float x1, float y1, float z1, float x2, float y2, float z2,
-               unsigned char r, unsigned char g, unsigned char b,
-               unsigned char a)
+               unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     float r_f = r / 255.0f;
     float g_f = g / 255.0f;
@@ -156,8 +155,7 @@ void draw_cube(float x1, float y1, float z1, float x2, float y2, float z2,
 }
 
 void draw_cube(float x, float y, float z, float size,
-               unsigned char r, unsigned char g, unsigned char b,
-               unsigned char a)
+               unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
     float half_size = size * 0.5f;
     draw_cube(x - half_size, y - half_size, z - half_size,
@@ -166,52 +164,50 @@ void draw_cube(float x, float y, float z, float size,
 }
 
 void draw_rounded_rect(float x1, float y1, float x2, float y2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a,
-    float radius)
+                       unsigned char r, unsigned char g, unsigned char b, unsigned char a,
+                       float radius)
 {
     glColor4ub(r, g, b, a);
 
     glBegin(GL_POLYGON);
-    glVertex2f(x1+radius,y1);
-    glVertex2f(x2-radius,y1);
-    for(float i=(float)M_PI*1.5f;i<M_PI*2;i+=0.1f)
-        glVertex2f(x2-radius+cos(i)*radius,y1+radius+sin(i)*radius);
-    glVertex2f(x2,y1+radius);
-    glVertex2f(x2,y2-radius);
-    for(float i=0;i<(float)M_PI*0.5f;i+=0.1f)
-        glVertex2f(x2-radius+cos(i)*radius,y2-radius+sin(i)*radius);
-    glVertex2f(x2-radius,y2);
-    glVertex2f(x1+radius,y2);
-    for(float i=(float)M_PI*0.5f;i<M_PI;i+=0.1f)
-        glVertex2f(x1+radius+cos(i)*radius,y2-radius+sin(i)*radius);
-    glVertex2f(x1,y2-radius);
-    glVertex2f(x1,y1+radius);
-    for(float i=(float)M_PI;i<M_PI*1.5f;i+=0.1f)
-        glVertex2f(x1+radius+cos(i)*radius,y1+radius+sin(i)*radius);
+    glVertex2f(x1 + radius,y1);
+    glVertex2f(x2 - radius,y1);
+    for(float i = static_cast<float>(M_PI) * 1.5f; i < M_PI * 2; i += 0.1f)
+        glVertex2f(x2 - radius + std::cos(i) * radius, y1 + radius + std::sin(i) * radius);
+    glVertex2f(x2, y1 + radius);
+    glVertex2f(x2, y2 - radius);
+    for(float i = 0; i < static_cast<float>(M_PI) * 0.5f; i += 0.1f)
+        glVertex2f(x2 - radius + std::cos(i) * radius, y2 - radius + std::sin(i) * radius);
+    glVertex2f(x2 - radius, y2);
+    glVertex2f(x1 + radius, y2);
+    for(float i = static_cast<float>(M_PI) * 0.5f; i < M_PI; i += 0.1f)
+        glVertex2f(x1 + radius + std::cos(i) * radius, y2 - radius + std::sin(i) * radius);
+    glVertex2f(x1, y2 - radius);
+    glVertex2f(x1, y1 + radius);
+    for(float i = static_cast<float>(M_PI); i < M_PI * 1.5f; i += 0.1f)
+        glVertex2f(x1 + radius + std::cos(i) * radius, y1 + radius + std::sin(i) * radius);
     glEnd();
 }
 
 void draw_rounded_rect(int x1, int y1, int x2, int y2,
-    unsigned char r, unsigned char g, unsigned char b, unsigned char a,
-    float radius)
+                       unsigned char r, unsigned char g, unsigned char b, unsigned char a,
+                       float radius)
 {
-    draw_rounded_rect(float(x1), float(y1), float(x2), float(y2),
-                      r, g, b, a, radius);
+    draw_rounded_rect(float(x1), float(y1), float(x2), float(y2), r, g, b, a, radius);
 }
 
 void draw_rounded_rect(float x1, float y1, float x2, float y2,
-    const RGBColor & color, unsigned char a,
-    float radius)
+                       const RGBColor& color, unsigned char a,
+                       float radius)
 {
     draw_rounded_rect(x1, y1, x2, y2, color.r, color.g, color.b, a, radius);
 }
 
 void draw_rounded_rect(int x1, int y1, int x2, int y2,
-    const RGBColor & color, unsigned char a,
-    float radius)
+                       const RGBColor& color, unsigned char a,
+                       float radius)
 {
-    draw_rounded_rect(float(x1), float(y1), float(x2), float(y2),
-                      color, a, radius);
+    draw_rounded_rect(float(x1), float(y1), float(x2), float(y2), color, a, radius);
 }
 
 #define POINTER_SIZE 5
@@ -219,12 +215,10 @@ void draw_rounded_rect(int x1, int y1, int x2, int y2,
 void draw_pointer(float x, float y,
                   unsigned char r, unsigned char g, unsigned char b)
 {
-    x = floor(x - POINTER_SIZE * 0.5f);
-    y = floor(y - POINTER_SIZE * 0.5f);
-    draw_rect(x, y, x + POINTER_SIZE, y + POINTER_SIZE,
-              0, 0, 0, 255);
-    draw_rect(x + 1, y + 1, x + POINTER_SIZE - 1, y + POINTER_SIZE - 1,
-              r, g, b, 255);
+    x = std::floor(x - POINTER_SIZE * 0.5f);
+    y = std::floor(y - POINTER_SIZE * 0.5f);
+    draw_rect(x, y, x + POINTER_SIZE, y + POINTER_SIZE, 0, 0, 0, 255);
+    draw_rect(x + 1, y + 1, x + POINTER_SIZE - 1, y + POINTER_SIZE - 1, r, g, b, 255);
 }
 
 void draw_pointer(float x, float y)
@@ -254,36 +248,37 @@ void setup_opengl()
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 }
 
-vec3 perp(const vec3 & v) 
+vec3 perp(const vec3& v)
 {
-    float min = fabs(v.x);
+    float min = std::abs(v.x);
     vec3 cardinal_axis(1.0f, 0.0f, 0.0f);
  
-    if(fabs(v.y) < min) {
-        min = fabs(v.y);
+    if(std::abs(v.y) < min)
+    {
+        min = std::abs(v.y);
         cardinal_axis = vec3(0.0f, 1.0f, 0.0f);
     }
  
-    if(fabs(v.z) < min)
+    if(std::abs(v.z) < min)
         cardinal_axis = vec3(0.0f, 0.0f, 1.0f);
  
     return glm::cross(v, cardinal_axis);
 }
 
-void draw_cone(const vec3 & c, const vec3 & a, float rd, int n)
+void draw_cone(const vec3& c, const vec3& a, float rd, int n)
 {
-
     vec3 d = glm::normalize(a - c);
     vec3 e0 = perp(d);
     vec3 e1 = glm::cross(e0, d);
-    float ang_inc = 360.0f / n * (float(M_PI) / 180.0f);
+    float ang_inc = 360.0f / n * (static_cast<float>(M_PI) / 180.0f);
  
     // draw cone top
     glBegin(GL_TRIANGLE_FAN);
     glVertex3f(a.x, a.y, a.z);
-    for(int i = 0; i < n+1; i++) {
+    for(int i = 0; i < n + 1; i++)
+    {
         float rad = ang_inc * i;
-        vec3 p = c + (((e0 * cosf(rad)) + (e1 * sinf(rad))) * rd);
+        vec3 p = c + (((e0 * std::cos(rad)) + (e1 * std::sin(rad))) * rd);
         glVertex3f(p.x, p.y, p.z);
     }
     glEnd();
@@ -291,9 +286,10 @@ void draw_cone(const vec3 & c, const vec3 & a, float rd, int n)
     // draw cone bottom
     glBegin(GL_TRIANGLE_FAN);
     glVertex3f(c.x, c.y, c.z);
-    for(int i = n; i >= 0; i--) {
+    for(int i = n; i >= 0; i--)
+    {
         float rad = ang_inc * i;
-        vec3 p = c + (((e0 * cosf(rad)) + (e1 * sinf(rad))) * rd);
+        vec3 p = c + (((e0 * std::cos(rad)) + (e1 * std::sin(rad))) * rd);
         glVertex3f(p.x, p.y, p.z);
     }
     glEnd();

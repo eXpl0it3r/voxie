@@ -32,17 +32,17 @@ class PaletteGrid : public QWidget
     Q_OBJECT
 
 public:
-    MainWindow * window;
+    MainWindow* window;
     int palette_index;
     QPoint drag_start;
 
-    PaletteGrid(MainWindow * parent);
-    int get_index(const QPoint & p);
-    void paintEvent(QPaintEvent * event);
-    void mousePressEvent(QMouseEvent * event);
-    void mouseMoveEvent(QMouseEvent * event);
-    void dragEnterEvent(QDragEnterEvent * event);
-    void dropEvent(QDropEvent * event);
+    PaletteGrid(MainWindow* parent);
+    int get_index(const QPoint& p);
+    void paintEvent(QPaintEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
 };
 
 #endif // VOXIE_PALETTEGRID_HPP

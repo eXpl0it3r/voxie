@@ -29,9 +29,9 @@ THE SOFTWARE.
 #include <QMouseEvent>
 #include <QPainter>
 
-extern void draw_pointer(int x, int y, QPainter & painter);
+extern void draw_pointer(int x, int y, QPainter& painter);
 
-ColorSlider::ColorSlider(QWidget * parent)
+ColorSlider::ColorSlider(QWidget* parent)
 : QWidget(parent)
 , pix(NULL)
 {
@@ -45,13 +45,13 @@ void ColorSlider::set(float v)
     update();
 }
 
-void ColorSlider::set_mouse_pos(const QPoint & p)
+void ColorSlider::set_mouse_pos(const QPoint& p)
 {
-    set(float(p.x()) / float(width()));
-    ((PaletteEditor*)parentWidget())->set_palette();
+    set(static_cast<float>(p.x()) / static_cast<float>(width()));
+    static_cast<PaletteEditor*>(parentWidget())->set_palette();
 }
 
-void ColorSlider::mousePressEvent(QMouseEvent * event)
+void ColorSlider::mousePressEvent(QMouseEvent* event)
 {
     if (!(event->buttons() & Qt::LeftButton))
         return;
@@ -65,20 +65,22 @@ void ColorSlider::mouseMoveEvent(QMouseEvent* event)
     set_mouse_pos(event->pos());
 }
 
-void ColorSlider::paintEvent(QPaintEvent * event)
+void ColorSlider::paintEvent(QPaintEvent* event)
 {
     int w = width();
     int h = height();
 
-    if (!pix || pix->width() != w) {
+    if (!pix || pix->width() != w)
+    {
         delete pix;
         QImage img(w, 1, QImage::Format_RGB32);
-        unsigned int * pixel = (unsigned int*)img.scanLine(0);
-        const unsigned int * end = pixel + w;
+        unsigned int* pixel = reinterpret_cast<unsigned int*>(img.scanLine(0));
+        const unsigned int* end = pixel + w;
         int x = 0;
-        while (pixel < end) {
+        while (pixel < end)
+        {
             QColor c;
-            float hue = float(x) / float(w);
+            float hue = static_cast<float>(x) / static_cast<float>(w);
             c.setHsvF(hue, 1.0f, 1.0f);
             *pixel = c.rgb();
             pixel++;
@@ -90,6 +92,6 @@ void ColorSlider::paintEvent(QPaintEvent * event)
     QPainter p(this);
     p.drawPixmap(0, 0, w, h, *pix);
 
-    int p_x = int(value * w);
+    int p_x = static_cast<int>(value * w);
     draw_pointer(p_x, h / 2, p);
 }

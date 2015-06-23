@@ -32,26 +32,17 @@ QString * palette_names = NULL;
 #define POINTER_SIZE 10
 #define POINTER_SIZE2 (POINTER_SIZE - 2)
 
-void draw_pointer(int x, int y, QPainter & painter)
+void draw_pointer(int x, int y, QPainter& painter)
 {
     painter.setPen(Qt::black);
-    painter.drawArc(x - POINTER_SIZE / 2, y - POINTER_SIZE / 2, 
-                    POINTER_SIZE, POINTER_SIZE, 0, 16 * 360);
+    painter.drawArc(x - POINTER_SIZE / 2, y - POINTER_SIZE / 2, POINTER_SIZE, POINTER_SIZE, 0, 16 * 360);
     painter.setPen(Qt::white);
-    painter.drawArc(x - POINTER_SIZE2 / 2, y - POINTER_SIZE2 / 2, 
-                    POINTER_SIZE2, POINTER_SIZE2, 0, 16 * 360);
+    painter.drawArc(x - POINTER_SIZE2 / 2, y - POINTER_SIZE2 / 2, POINTER_SIZE2, POINTER_SIZE2, 0, 16 * 360);
 }
 
 
-//#include <QString>
-
 class QLabel;
 class QWidget;
-
-//std::string convert_str(const QString & str);
-//QLabel * create_label(const QString & text);
-//QString get_model_name(QWidget * parent, bool save);
-//void set_window_file_path(QWidget * w, const QString & name);
 
 #include "opengl.hpp"
 #include "glm.hpp"
@@ -64,20 +55,20 @@ class QWidget;
 #include <QApplication>
 #include <QFileDialog>
 
-QLabel * create_label(const QString & text)
+QLabel* create_label(const QString& text)
 {
-    QLabel * label = new QLabel(text);
+    QLabel* label = new QLabel(text);
     label->setFixedWidth(50);
     label->setAlignment(Qt::AlignCenter);
     return label;
 }
 
-std::string convert_str(const QString & str)
+std::string convert_str(const QString& str)
 {
     return str.toUtf8().constData();
 }
 
-QString get_model_name(QWidget * parent, bool save)
+QString get_model_name(QWidget* parent, bool save)
 {
     QString caption = QObject::tr("Model file dialog");
     QString filter = QObject::tr("Voxie model (*.vxi);;All Files (*)");
@@ -89,14 +80,14 @@ QString get_model_name(QWidget * parent, bool save)
     return text;
 }
 
-void set_window_file_path(QWidget * w, const QString & name)
+void set_window_file_path(QWidget* w, const QString& name)
 {
     w->setWindowFilePath(name);
     QEvent e(QEvent::WindowTitleChange);
     QApplication::sendEvent(w, &e);
 }
 
-btTransform get_pos_trans(const vec3 & p)
+btTransform get_pos_trans(const vec3& p)
 {
     btTransform trans;
     trans.setIdentity();

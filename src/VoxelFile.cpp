@@ -25,10 +25,11 @@ THE SOFTWARE.
 
 #define PALETTE_FILE "palette.dat"
 
-void read_cstring(QDataStream & stream, QString & v)
+void read_cstring(QDataStream& stream, QString& v)
 {
     quint8 c;
-    while (!stream.atEnd()) {
+    while (!stream.atEnd())
+    {
         stream >> c;
         if (c == 0)
             break;
@@ -36,7 +37,7 @@ void read_cstring(QDataStream & stream, QString & v)
     }
 }
 
-void write_cstring(QDataStream & stream, const QString & v)
+void write_cstring(QDataStream& stream, const QString& v)
 {
     QByteArray bytes = v.toUtf8();
     stream.writeRawData(bytes.constData(), bytes.size() + 1);
@@ -55,9 +56,11 @@ void VoxelFile::load_palette()
         fp.read((char*)&global_palette[i], sizeof(RGBColor));
     QDataStream stream(&fp);
     stream.setByteOrder(QDataStream::LittleEndian);
-    if (!fp.atEnd()) {
+    if (!fp.atEnd())
+    {
         // read names
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 256; i++)
+        {
             read_cstring(stream, palette_names[i]);
         }
     }
@@ -87,7 +90,8 @@ unsigned char VoxelFile::get_closest_index(RGBColor c)
     bool is_set = false;
     float dist;
     unsigned char current_index = 0;
-    for (int i = 0; i < 256; i++) {
+    for (int i = 0; i < 256; i++)
+    {
         RGBColor & pal_color = global_palette[i];
         vec3 new_vec(pal_color.r, pal_color.g, pal_color.b);
         float new_dist = glm::distance(color_vec, new_vec);
@@ -101,27 +105,38 @@ unsigned char VoxelFile::get_closest_index(RGBColor c)
 }
 
 VoxelFile::VoxelFile()
-: data(NULL), shape(NULL), model(NULL)
+: data(NULL)
+, shape(NULL)
+, model(NULL)
 {
     load_palette();
 }
 
-VoxelFile::VoxelFile(QFile & fp)
-: data(NULL), shape(NULL), model(NULL)
+VoxelFile::VoxelFile(QFile& fp)
+: data(NULL)
+, shape(NULL)
+, model(NULL)
 {
     load_palette();
     load_fp(fp);
 }
 
-VoxelFile::VoxelFile(const QString & filename)
-: data(NULL), shape(NULL), model(NULL)
+VoxelFile::VoxelFile(const QString& filename)
+: data(NULL)
+, shape(NULL)
+, model(NULL)
 {
     load_palette();
     load(filename);
 }
 
 VoxelFile::VoxelFile(int x_size, int y_size, int z_size)
-: x_offset(0), y_offset(0), z_offset(0), data(NULL), shape(NULL), model(NULL)
+: x_offset(0)
+, y_offset(0)
+, z_offset(0)
+, data(NULL)
+, shape(NULL)
+, model(NULL)
 {
     load_palette();
     reset(x_size, y_size, z_size);
@@ -153,7 +168,7 @@ void VoxelFile::reset(int x_size, int y_size, int z_size)
     reset_shape();
 }
 
-void VoxelFile::add_point(const QString & name,
+void VoxelFile::add_point(const QString& name,
                           int x, int y, int z)
 {
     points.push_back(ReferencePoint(name, x, y, z));
@@ -164,47 +179,48 @@ void VoxelFile::remove_point(size_t i)
     points.erase(points.begin() + i);
 }
 
-ReferencePoint * VoxelFile::get_point(const QString & name)
+ReferencePoint* VoxelFile::get_point(const QString& name)
 {
     // XXX use fast_map
     ReferencePoints::iterator it;
-    for (it = points.begin(); it != points.end(); it++) {
+    for (it = points.begin(); it != points.end(); it++)
+    {
         if ((*it).name == name)
             return &(*it);
     }
     return NULL;
 }
 
-ReferencePoint * VoxelFile::get_point(int i)
+ReferencePoint* VoxelFile::get_point(int i)
 {
-    if (i < 0 || i >= int(points.size()))
+    if (i < 0 || i >= static_cast<int>(points.size()))
         return NULL;
     return &points[i];
 }
 
 void VoxelFile::resize(int x1, int y1, int z1, int new_x, int new_y, int new_z)
 {
-    if (x1 == 0 && y1 == 0 && z1 == 0 &&
-        x_size == new_x && y_size == new_y && z_size == new_z)
+    if (x1 == 0 && y1 == 0 && z1 == 0 && x_size == new_x && y_size == new_y && z_size == new_z)
         return;
 
-    unsigned char * new_data = new unsigned char[new_x * new_y * new_z];
+    unsigned char* new_data = new unsigned char[new_x * new_y * new_z];
     int nx, ny, nz;
     for (int x = x1; x < x1 + new_x; x++)
-    for (int y = y1; y < y1 + new_y; y++)
-    for (int z = z1; z < z1 + new_z; z++) {
-        unsigned char c;
-        if (x < 0 || x >= x_size ||
-            y < 0 || y >= y_size ||
-            z < 0 ||z >= z_size)
-            c = VOXEL_AIR;
-        else
-            c = get(x, y, z);
-        nx = x - x1;
-        ny = y - y1;
-        nz = z - z1;
-        new_data[nz + ny * new_z + nx * new_z * new_y] = c;
-    }
+        for (int y = y1; y < y1 + new_y; y++)
+            for (int z = z1; z < z1 + new_z; z++)
+            {
+                unsigned char c;
+                if (x < 0 || x >= x_size ||
+                    y < 0 || y >= y_size ||
+                    z < 0 ||z >= z_size)
+                    c = VOXEL_AIR;
+                else
+                    c = get(x, y, z);
+                nx = x - x1;
+                ny = y - y1;
+                nz = z - z1;
+                new_data[nz + ny * new_z + nx * new_z * new_y] = c;
+            }
     delete[] data;
     data = new_data;
     x_size = new_x;
@@ -224,24 +240,25 @@ void VoxelFile::scale(float sx, float sy, float sz)
     int new_y = int(y_size * sy);
     int new_z = int(z_size * sz);
 
-    unsigned char * new_data = new unsigned char[new_x * new_y * new_z];
+    unsigned char* new_data = new unsigned char[new_x * new_y * new_z];
 
     for (int x = 0; x < new_x; x++)
-    for (int y = 0; y < new_y; y++)
-    for (int z = 0; z < new_z; z++) {
-        int x2 = int(x / sx);
-        int y2 = int(y / sy);
-        int z2 = int(z / sz);
-        new_data[z + y * new_z + x * new_z * new_y] = get(x2, y2, z2);
-    }
+        for (int y = 0; y < new_y; y++)
+            for (int z = 0; z < new_z; z++)
+            {
+                int x2 = int(x / sx);
+                int y2 = int(y / sy);
+                int z2 = int(z / sz);
+                new_data[z + y * new_z + x * new_z * new_y] = get(x2, y2, z2);
+            }
     delete[] data;
     data = new_data;
     x_size = new_x;
     y_size = new_y;
     z_size = new_z;
-    x_offset = int(x_offset * sx);
-    y_offset = int(y_offset * sy);
-    z_offset = int(z_offset * sz);
+    x_offset = static_cast<int>(x_offset * sx);
+    y_offset = static_cast<int>(y_offset * sy);
+    z_offset = static_cast<int>(z_offset * sz);
 }
 
 void VoxelFile::set_offset(int new_x, int new_y, int new_z)
@@ -268,47 +285,47 @@ void VoxelFile::optimize()
     // min coordinates
 
     for (x1 = 0; x1 < x_size; x1++)
-    for (y = 0; y < y_size; y++)
-    for (z = 0; z < z_size; z++)
-        if (is_solid_fast(x1, y, z))
-            goto x1_end;
+        for (y = 0; y < y_size; y++)
+            for (z = 0; z < z_size; z++)
+                if (is_solid_fast(x1, y, z))
+                    goto x1_end;
 x1_end:
 
     for (y1 = 0; y1 < y_size; y1++)
-    for (x = 0; x < x_size; x++)
-    for (z = 0; z < z_size; z++)
-        if (is_solid_fast(x, y1, z))
-            goto y1_end;
+        for (x = 0; x < x_size; x++)
+            for (z = 0; z < z_size; z++)
+                if (is_solid_fast(x, y1, z))
+                    goto y1_end;
 y1_end:
 
     for (z1 = 0; z1 < z_size; z1++)
-    for (x = 0; x < x_size; x++)
-    for (y = 0; y < y_size; y++)
-        if (is_solid_fast(x, y, z1))
-            goto z1_end;
+        for (x = 0; x < x_size; x++)
+            for (y = 0; y < y_size; y++)
+                if (is_solid_fast(x, y, z1))
+                    goto z1_end;
 z1_end:
 
     // max coordinates
 
     for (x2 = x_size - 1; x2 >= x1; x2--)
-    for (y = y1; y < y_size; y++)
-    for (z = z1; z < z_size; z++)
-        if (is_solid_fast(x2, y, z))
-            goto x2_end;
+        for (y = y1; y < y_size; y++)
+            for (z = z1; z < z_size; z++)
+                if (is_solid_fast(x2, y, z))
+                    goto x2_end;
 x2_end:
 
     for (y2 = y_size - 1; y2 >= y1; y2--)
-    for (x = x1; x < x_size; x++)
-    for (z = z1; z < z_size; z++)
-        if (is_solid_fast(x, y2, z))
-            goto y2_end;
+        for (x = x1; x < x_size; x++)
+            for (z = z1; z < z_size; z++)
+                if (is_solid_fast(x, y2, z))
+                    goto y2_end;
 y2_end:
 
     for (z2 = z_size - 1; z2 >= z1; z2--)
-    for (x = x1; x < x_size; x++)
-    for (y = y1; y < y_size; y++)
-        if (is_solid_fast(x, y, z2))
-            goto z2_end;
+        for (x = x1; x < x_size; x++)
+            for (y = y1; y < y_size; y++)
+                if (is_solid_fast(x, y, z2))
+                    goto z2_end;
 z2_end:
 
     resize(x1, y1, z1, x2 - x1 + 1, y2 - y1 + 1, z2 - z1 + 1);
@@ -320,15 +337,16 @@ void VoxelFile::rotate()
     int new_y = x_size;
     int new_z = z_size;
 
-    unsigned char * new_data = new unsigned char[new_x * new_y * new_z];
+    unsigned char* new_data = new unsigned char[new_x * new_y * new_z];
     for (int x = 0; x < x_size; x++)
-    for (int y = 0; y < y_size; y++)
-    for (int z = 0; z < z_size; z++) {
-        int nx = y_size - y - 1;
-        int ny = x;
-        int nz = z;
-        new_data[nz + ny * new_z + nx * new_z * new_y] = get(x, y, z);
-    }
+        for (int y = 0; y < y_size; y++)
+            for (int z = 0; z < z_size; z++)
+            {
+                int nx = y_size - y - 1;
+                int ny = x;
+                int nz = z;
+                new_data[nz + ny * new_z + nx * new_z * new_y] = get(x, y, z);
+            }
     delete[] data;
     data = new_data;
     int x_off = x_offset;
@@ -340,7 +358,7 @@ void VoxelFile::rotate()
     z_size = new_z;
 }
 
-bool VoxelFile::load(const QString & filename)
+bool VoxelFile::load(const QString& filename)
 {
     QFile fp(filename);
     if (!fp.open(QIODevice::ReadOnly))
@@ -350,7 +368,7 @@ bool VoxelFile::load(const QString & filename)
     return true;
 }
 
-void VoxelFile::load_fp(QFile & fp)
+void VoxelFile::load_fp(QFile& fp)
 {
     QDataStream stream(&fp);
     stream.setByteOrder(QDataStream::LittleEndian);
@@ -363,7 +381,7 @@ void VoxelFile::load_fp(QFile & fp)
     if (data != NULL)
         delete[] data;
     data = new unsigned char[x_size * y_size * z_size];
-    stream.readRawData((char*)data, x_size * y_size * z_size);
+    stream.readRawData(reinterpret_cast<char*>(data), x_size * y_size * z_size);
     stream.skipRawData(256 * 3);
 
     // reference points
@@ -375,7 +393,8 @@ void VoxelFile::load_fp(QFile & fp)
         stream >> point_count;
     QString name;
     qint32 x, y, z;
-    for (int i = 0; i < point_count; i++) {
+    for (int i = 0; i < point_count; i++)
+    {
         read_cstring(stream, name);
         stream >> x;
         stream >> y;
@@ -384,7 +403,7 @@ void VoxelFile::load_fp(QFile & fp)
     }
 }
 
-void VoxelFile::save(const QString & filename)
+void VoxelFile::save(const QString& filename)
 {
     QFile fp(filename);
     if (!fp.open(QIODevice::WriteOnly))
@@ -393,7 +412,7 @@ void VoxelFile::save(const QString & filename)
     fp.close();
 }
 
-void VoxelFile::save_fp(QFile & fp)
+void VoxelFile::save_fp(QFile& fp)
 {
     QDataStream stream(&fp);
     stream.setByteOrder(QDataStream::LittleEndian);
@@ -403,11 +422,12 @@ void VoxelFile::save_fp(QFile & fp)
     stream << x_offset;
     stream << y_offset;
     stream << z_offset;
-    stream.writeRawData((char*)data, x_size * y_size * z_size);
-    stream.writeRawData((char*)global_palette, 256 * 3);
+    stream.writeRawData(reinterpret_cast<char*>(data), x_size * y_size * z_size);
+    stream.writeRawData(reinterpret_cast<char*>(global_palette), 256 * 3);
     stream << quint8(points.size());
     ReferencePoints::const_iterator it;
-    for (it = points.begin(); it != points.end(); it++) {
+    for (it = points.begin(); it != points.end(); it++)
+    {
         const ReferencePoint & point = *it;
         write_cstring(stream, point.name);
         stream << point.x;
@@ -417,7 +437,7 @@ void VoxelFile::save_fp(QFile & fp)
     save_palette();
 }
 
-VoxelModel * VoxelFile::get_model()
+VoxelModel* VoxelFile::get_model()
 {
     if (model != NULL)
         return model;
@@ -426,34 +446,35 @@ VoxelModel * VoxelFile::get_model()
     return model;
 }
 
-btCompoundShape * VoxelFile::get_shape()
+btCompoundShape* VoxelFile::get_shape()
 {
     if (shape != NULL)
         return shape;
-    btCompoundShape * shape = new btCompoundShape(true);
+    btCompoundShape* shape = new btCompoundShape(true);
     const float s = 0.5f;
-    static btBoxShape * box_shape = new btBoxShape(btVector3(s, s, s));
+    static btBoxShape* box_shape = new btBoxShape(btVector3(s, s, s));
     btTransform transform;
     for (int x = 0; x < x_size; x++)
-    for (int y = 0; y < y_size; y++)
-    for (int z = 0; z < z_size; z++) {
-        if (!is_solid(x, y, z))
-            continue;
-        // ignore if not an exposed block
-        if (is_solid(x + 1, y, z) &&
-            is_solid(x - 1, y, z) &&
-            is_solid(x, y + 1, z) &&
-            is_solid(x, y - 1, z) &&
-            is_solid(x, y, z + 1) &&
-            is_solid(x, y, z - 1))
-            continue;
+        for (int y = 0; y < y_size; y++)
+            for (int z = 0; z < z_size; z++)
+            {
+                if (!is_solid(x, y, z))
+                    continue;
+                // ignore if not an exposed block
+                if (is_solid(x + 1, y, z) &&
+                    is_solid(x - 1, y, z) &&
+                    is_solid(x, y + 1, z) &&
+                    is_solid(x, y - 1, z) &&
+                    is_solid(x, y, z + 1) &&
+                    is_solid(x, y, z - 1))
+                    continue;
 
-        transform.setIdentity();
-        transform.setOrigin(btVector3(x + x_offset + 0.5f,
-                                      y + y_offset + 0.5f,
-                                      z + z_offset + 0.5f));
-        shape->addChildShape(transform, box_shape);
-    }
+                transform.setIdentity();
+                transform.setOrigin(btVector3(x + x_offset + 0.5f,
+                                              y + y_offset + 0.5f,
+                                              z + z_offset + 0.5f));
+                shape->addChildShape(transform, box_shape);
+            }
     this->shape = shape;
     return shape;
 }
@@ -464,7 +485,7 @@ void VoxelFile::reset_shape()
     shape = NULL;
 }
 
-void VoxelFile::clone(VoxelFile & other)
+void VoxelFile::clone(VoxelFile& other)
 {
     x_size = other.x_size;
     y_size = other.y_size;
@@ -476,5 +497,5 @@ void VoxelFile::clone(VoxelFile & other)
     delete[] data;
     size_t size = x_size * y_size * z_size;
     data = new unsigned char[size];
-    memcpy(data, other.data, size);
+    std::memcpy(data, other.data, size);
 }

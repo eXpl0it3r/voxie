@@ -43,10 +43,10 @@ class VoxelEditor : public QGLWidget
 public:
     QString model_name;
 
-    MainWindow * window;
+    MainWindow* window;
 
-    VoxelFile * voxel;
-    VoxelModel * model;
+    VoxelFile* voxel;
+    VoxelModel* model;
 
     mat4 projection_matrix, view_matrix, mvp, inverse_mvp;
     vec4 viewport;
@@ -60,7 +60,7 @@ public:
     bool has_hit, hit_floor;
     ivec3 hit_next, hit_block;
 
-    QRubberBand * rubberband;
+    QRubberBand* rubberband;
     QPoint start_drag;
     SelectedVoxels selected_list;
     static SelectedVoxels copied_list;
@@ -68,10 +68,10 @@ public:
 
     QPoint last_pos;
 
-    VoxelEditor(MainWindow * parent);
-    void load(const QString & name);
+    VoxelEditor(MainWindow* parent);
+    void load(const QString& name);
     void reset();
-    void clone(VoxelFile * other);
+    void clone(VoxelFile* other);
     void on_changed();
     void update_hit();
     ~VoxelEditor();
@@ -79,21 +79,21 @@ public:
 protected:
     void initializeGL();
     void paintGL();
-    void paintEvent(QPaintEvent * e);
+    void paintEvent(QPaintEvent* e);
     void resizeGL(int w, int h);
-    void keyPressEvent(QKeyEvent *e);
-    btCollisionObject * get_collision_object();
-    ivec3 get_pos_vec(const vec3 & v);
+    void keyPressEvent(QKeyEvent* e);
+    btCollisionObject* get_collision_object();
+    ivec3 get_pos_vec(const vec3& v);
     void update_drag();
     void offset_selected(int dx, int dy, int dz);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* e);
+    void mouseReleaseEvent(QMouseEvent* e);
     void pick_color();
     void use_tool_primary(bool click);
     void use_tool_secondary(bool click);
-    void wheelEvent(QWheelEvent * e);
-    void closeEvent(QCloseEvent *event);
+    void wheelEvent(QWheelEvent* e);
+    void closeEvent(QCloseEvent* event);
     void deselect();
     void copy_selected();
     void delete_selected();

@@ -42,12 +42,11 @@ THE SOFTWARE.
 #include <QGLWidget>
 #include <QFileDialog>
 
-extern QString get_model_name(QWidget * parent, bool save);
+extern QString get_model_name(QWidget* parent, bool save);
 
-QAction * create_tool_icon(const QString & name, const QString & v,
-                           QActionGroup * group, int id)
+QAction* create_tool_icon(const QString& name, const QString& v, QActionGroup* group, int id)
 {
-    QAction * action = new QAction(name, group);
+    QAction* action = new QAction(name, group);
     QPixmap img(v);
     img = img.scaled(img.size() * 2);
     action->setIcon(QIcon(img));
@@ -58,7 +57,7 @@ QAction * create_tool_icon(const QString & name, const QString & v,
     return action;
 }
 
-MainWindow::MainWindow(QWidget * parent)
+MainWindow::MainWindow(QWidget* parent)
 : QMainWindow(parent)
 {
     gl_format = QGLFormat::defaultFormat();
@@ -72,22 +71,17 @@ MainWindow::MainWindow(QWidget * parent)
     mdi->setTabsClosable(true);
     mdi->setTabsMovable(true);
     setCentralWidget(mdi);
-    connect(mdi, SIGNAL(subWindowActivated(QMdiSubWindow*)), 
-        SLOT(on_window_change(QMdiSubWindow*)));
+    connect(mdi, SIGNAL(subWindowActivated(QMdiSubWindow*)), SLOT(on_window_change(QMdiSubWindow*)));
 
     create_actions();
     create_menus();
 
-    QToolBar * tool = new QToolBar("Tools", this);
+    QToolBar* tool = new QToolBar("Tools", this);
     tool_group = new QActionGroup(this);
-    tool->addAction(create_tool_icon("Pointer", "editor/pointer_tool.png",
-        tool_group, POINTER_EDIT_TOOL));
-    tool->addAction(create_tool_icon("Block", "editor/block_tool.png",
-        tool_group, BLOCK_EDIT_TOOL));
-    tool->addAction(create_tool_icon("Pencil", "editor/pencil_tool.png",
-        tool_group, PENCIL_EDIT_TOOL));
-    tool->addAction(create_tool_icon("Bucket", "editor/bucket_tool.png",
-        tool_group, BUCKET_EDIT_TOOL));
+    tool->addAction(create_tool_icon("Pointer", "editor/pointer_tool.png", tool_group, POINTER_EDIT_TOOL));
+    tool->addAction(create_tool_icon("Block", "editor/block_tool.png", tool_group, BLOCK_EDIT_TOOL));
+    tool->addAction(create_tool_icon("Pencil", "editor/pencil_tool.png", tool_group, PENCIL_EDIT_TOOL));
+    tool->addAction(create_tool_icon("Bucket", "editor/bucket_tool.png", tool_group, BUCKET_EDIT_TOOL));
     addToolBar(Qt::LeftToolBarArea, tool);
 
     model_dock = new QDockWidget("Model");
@@ -124,27 +118,27 @@ void MainWindow::create_menus()
     model_menu->addAction(rotate_action);
 }
 
-bool MainWindow::test_current_window(QWidget * other)
+bool MainWindow::test_current_window(QWidget* other)
 {
     return get_current_window() == other;
 }
 
-QWidget * MainWindow::get_current_window()
+QWidget* MainWindow::get_current_window()
 {
-    QMdiSubWindow * w = mdi->currentSubWindow();
+    QMdiSubWindow* w = mdi->currentSubWindow();
     if (!w)
         return NULL;
     return w->widget();
 }
 
-VoxelEditor * MainWindow::get_voxel_editor()
+VoxelEditor* MainWindow::get_voxel_editor()
 {
     return qobject_cast<VoxelEditor*>(get_current_window());
 }
 
-VoxelFile * MainWindow::get_voxel()
+VoxelFile* MainWindow::get_voxel()
 {
-    VoxelEditor * ed = get_voxel_editor();
+    VoxelEditor* ed = get_voxel_editor();
     if (ed)
         return ed->voxel;
     return NULL;
@@ -168,7 +162,7 @@ int MainWindow::get_tool()
 
 void MainWindow::model_changed()
 {
-    VoxelEditor * ed = get_voxel_editor();
+    VoxelEditor* ed = get_voxel_editor();
     ed->voxel->reset_shape();
     ed->on_changed();
 }
@@ -198,54 +192,48 @@ void MainWindow::create_actions()
     exit_action->setShortcuts(QKeySequence::Quit);
     exit_action->setStatusTip(tr("Exit the application"));
     connect(exit_action, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
- 
-/*        cut_action = new QAction(tr("Cu&t"), this);
+
+    /*
+    cut_action = new QAction(tr("Cu&t"), this);
     cut_action->setShortcuts(QKeySequence::Cut);
-    cut_action->setStatusTip(tr("Cut the current selection's contents to the "
-                            "clipboard"));
+    cut_action->setStatusTip(tr("Cut the current selection's contents to the clipboard"));
     connect(cut_action, SIGNAL(triggered()), this, SLOT(cut()));
  
     copy_action = new QAction(tr("&Copy"), this);
     copy_action->setShortcuts(QKeySequence::Copy);
-    copy_action->setStatusTip(tr("Copy the current selection's contents to the "
-                             "clipboard"));
+    copy_action->setStatusTip(tr("Copy the current selection's contents to the clipboard"));
     connect(copy_action, SIGNAL(triggered()), this, SLOT(copy()));
  
     paste_action = new QAction(tr("&Paste"), this);
     paste_action->setShortcuts(QKeySequence::Paste);
-    paste_action->setStatusTip(tr("Paste the clipboard's contents into the current "
-                              "selection"));
-    connect(paste_action, SIGNAL(triggered()), this, SLOT(paste()));*/
+    paste_action->setStatusTip(tr("Paste the clipboard's contents into the current selection"));
+    connect(paste_action, SIGNAL(triggered()), this, SLOT(paste()));
+    */
 
     // model menu
 
     double_size_action = new QAction(tr("Double size"), this);
     // new_action->setShortcuts(QKeySequence::New);
-    connect(double_size_action, SIGNAL(triggered()), this, 
-        SLOT(double_size()));
+    connect(double_size_action, SIGNAL(triggered()), this, SLOT(double_size()));
  
     half_size_action = new QAction(tr("Half size"), this);
     // open_action->setShortcuts(QKeySequence::Open);
-    connect(half_size_action, SIGNAL(triggered()), this, 
-        SLOT(half_size()));
+    connect(half_size_action, SIGNAL(triggered()), this, SLOT(half_size()));
  
     optimize_action = new QAction(tr("Optimize dimensions"), this);
     // save_action->setShortcuts(QKeySequence::Save);
-    connect(optimize_action, SIGNAL(triggered()), this,
-        SLOT(optimize()));
+    connect(optimize_action, SIGNAL(triggered()), this, SLOT(optimize()));
 
     rotate_action = new QAction(tr("Rotate 90 degrees"), this);
     // save_action->setShortcuts(QKeySequence::Save);
-    connect(rotate_action, SIGNAL(triggered()), this,
-        SLOT(rotate()));
-
+    connect(rotate_action, SIGNAL(triggered()), this, SLOT(rotate()));
 }
 
-void MainWindow::closeEvent(QCloseEvent * event)
+void MainWindow::closeEvent(QCloseEvent* event)
 {
-
-    while (true) {
-        QMdiSubWindow * w = mdi->activeSubWindow();
+    while (true)
+    {
+        QMdiSubWindow* w = mdi->activeSubWindow();
         if (w == NULL)
             break;
         if (w->close())
@@ -261,21 +249,22 @@ MainWindow::~MainWindow()
 
 }
 
-void MainWindow::set_status(const std::string & text)
+void MainWindow::set_status(const std::string& text)
 {
     statusBar()->showMessage(text.c_str());
 }
 
-void MainWindow::on_window_change(QMdiSubWindow * w)
+void MainWindow::on_window_change(QMdiSubWindow* w)
 {
-    VoxelEditor * v = get_voxel_editor();
+    VoxelEditor* v = get_voxel_editor();
     bool model_visible = v != 0;
 
     model_dock->setVisible(model_visible);
     palette_dock->setVisible(model_visible);
     model_menu->setEnabled(model_visible);
 
-    if (model_visible) {
+    if (model_visible)
+    {
         model_properties->update_controls();
         palette_editor->set_current();
     }
@@ -283,8 +272,8 @@ void MainWindow::on_window_change(QMdiSubWindow * w)
 
 void MainWindow::new_model()
 {
-    VoxelEditor * ed = new VoxelEditor(this);
-    QMdiSubWindow * w = mdi->addSubWindow(ed);
+    VoxelEditor* ed = new VoxelEditor(this);
+    QMdiSubWindow* w = mdi->addSubWindow(ed);
     ed->reset();
     w->showMaximized();
 }
@@ -294,26 +283,26 @@ void MainWindow::open_model()
     QString name = get_model_name(this, false);
     if (name.isEmpty())
         return;
-    VoxelEditor * ed = new VoxelEditor(this);
-    QMdiSubWindow * w = mdi->addSubWindow(ed);
+    VoxelEditor* ed = new VoxelEditor(this);
+    QMdiSubWindow* w = mdi->addSubWindow(ed);
     ed->load(name);
     w->showMaximized();
 }
 
 void MainWindow::clone_model()
 {
-    VoxelFile * voxel = get_voxel();
+    VoxelFile* voxel = get_voxel();
     if (voxel == NULL)
         return;
-    VoxelEditor * ed = new VoxelEditor(this);
-    QMdiSubWindow * w = mdi->addSubWindow(ed);
+    VoxelEditor* ed = new VoxelEditor(this);
+    QMdiSubWindow* w = mdi->addSubWindow(ed);
     ed->clone(voxel);
     w->showMaximized();
 }
 
 void MainWindow::save()
 {
-    QWidget * w = get_current_window();
+    QWidget* w = get_current_window();
     if (!w)
         return;
     QMetaObject::invokeMethod(w, "save");
@@ -321,7 +310,7 @@ void MainWindow::save()
 
 void MainWindow::save_as()
 {
-    QWidget * w = get_current_window();
+    QWidget* w = get_current_window();
     if (!w)
         return;
     QMetaObject::invokeMethod(w, "save_as");
@@ -329,7 +318,7 @@ void MainWindow::save_as()
 
 void MainWindow::double_size()
 {
-    VoxelFile * voxel = get_voxel();
+    VoxelFile* voxel = get_voxel();
     voxel->scale(2.0f, 2.0f, 2.0f);
     model_properties->update_controls();
     model_changed();
@@ -337,7 +326,7 @@ void MainWindow::double_size()
 
 void MainWindow::half_size()
 {
-    VoxelFile * voxel = get_voxel();
+    VoxelFile* voxel = get_voxel();
     voxel->scale(0.5f, 0.5f, 0.5f);
     model_properties->update_controls();
     model_changed();
@@ -345,7 +334,7 @@ void MainWindow::half_size()
 
 void MainWindow::optimize()
 {
-    VoxelFile * voxel = get_voxel();
+    VoxelFile* voxel = get_voxel();
     voxel->optimize();
     model_properties->update_controls();
     model_changed();
@@ -353,7 +342,7 @@ void MainWindow::optimize()
 
 void MainWindow::rotate()
 {
-    VoxelFile * voxel = get_voxel();
+    VoxelFile* voxel = get_voxel();
     voxel->rotate();
     model_properties->update_controls();
     model_changed();
@@ -361,14 +350,14 @@ void MainWindow::rotate()
 
 void MainWindow::set_animation_frame(bool forward)
 {
-    VoxelEditor * old = get_voxel_editor();
+    VoxelEditor* old = get_voxel_editor();
     if (forward)
         mdi->activateNextSubWindow();
     else
         mdi->activatePreviousSubWindow();
     if (old == NULL)
         return;
-    VoxelEditor * v = get_voxel_editor();
+    VoxelEditor* v = get_voxel_editor();
     v->pos = old->pos;
     v->scale = old->scale;
     v->rotate_x = old->rotate_x;

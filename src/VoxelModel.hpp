@@ -34,17 +34,17 @@ class btCompoundShape;
 class VoxelModel
 {
 public:
-    VoxelFile * file;
+    VoxelFile* file;
     GLuint value;
     bool changed;
 
-    VoxelModel(VoxelFile * file);
+    VoxelModel(VoxelFile* file);
     ~VoxelModel();
     vec3 get_ken_normal(int x, int y, int z);
     void draw();
     void draw_immediate(float alpha = 1.0f, bool offset = true);
     void update(bool force = true);
-    ReferencePoint * get_point(const QString & name);
+    ReferencePoint* get_point(const QString& name);
 };
 
 #endif // VOXIE_VOXELMODEL_HPP

@@ -32,33 +32,33 @@ THE SOFTWARE.
 #include <QComboBox>
 #include <QPushButton>
 
-extern QLabel * create_label(const QString & text);
+extern QLabel* create_label(const QString& text);
 
 // ModelProperties
 
 #define SPINBOX_RANGE 10000000
 
-QSpinBox * ModelProperties::create_spinbox()
+QSpinBox* ModelProperties::create_spinbox()
 {
-    QSpinBox * box = new QSpinBox(this);
+    QSpinBox* box = new QSpinBox(this);
     box->setRange(-SPINBOX_RANGE, SPINBOX_RANGE);
     connect(box, SIGNAL(valueChanged(int)), SLOT(on_change()));
     return box;
 }
 
-ModelProperties::ModelProperties(MainWindow * parent)
-: QWidget(parent), ignore_changes(true), window(parent)
+ModelProperties::ModelProperties(MainWindow* parent)
+: QWidget(parent)
+, ignore_changes(true)
+, window(parent)
 {
-    QVBoxLayout * layout = new QVBoxLayout(this);
+    QVBoxLayout* layout = new QVBoxLayout(this);
 
-    QHBoxLayout * ref_list_layout = new QHBoxLayout;
+    QHBoxLayout* ref_list_layout = new QHBoxLayout;
     ref_list = new QComboBox(this);
     ref_list->setInsertPolicy(QComboBox::NoInsert);
     ref_list->setEditable(true);
-    connect(ref_list, SIGNAL(currentIndexChanged(int)),
-            SLOT(on_ref_change()));
-    connect(ref_list, SIGNAL(editTextChanged(QString)),
-            SLOT(on_ref_name(QString)));
+    connect(ref_list, SIGNAL(currentIndexChanged(int)), SLOT(on_ref_change()));
+    connect(ref_list, SIGNAL(editTextChanged(QString)), SLOT(on_ref_name(QString)));
     ref_list_layout->addWidget(ref_list);
     new_ref = new QPushButton("New");
     new_ref->setFixedWidth(50);
@@ -70,7 +70,7 @@ ModelProperties::ModelProperties(MainWindow * parent)
     connect(del_ref, SIGNAL(clicked(bool)), SLOT(on_del_ref()));
     layout->addLayout(ref_list_layout);
 
-    QHBoxLayout * ref_layout = new QHBoxLayout;
+    QHBoxLayout* ref_layout = new QHBoxLayout;
     ref_layout->addWidget(create_label("Ref"));
     ref_x = create_spinbox();
     ref_y = create_spinbox();
@@ -80,7 +80,7 @@ ModelProperties::ModelProperties(MainWindow * parent)
     ref_layout->addWidget(ref_z);
     layout->addLayout(ref_layout);
 
-    QHBoxLayout * off_layout = new QHBoxLayout;
+    QHBoxLayout* off_layout = new QHBoxLayout;
     off_layout->addWidget(create_label("Offset"));
     off_x = create_spinbox();
     off_y = create_spinbox();
@@ -90,7 +90,7 @@ ModelProperties::ModelProperties(MainWindow * parent)
     off_layout->addWidget(off_z);
     layout->addLayout(off_layout);
 
-    QHBoxLayout * size_layout = new QHBoxLayout;
+    QHBoxLayout* size_layout = new QHBoxLayout;
     size_layout->addWidget(create_label("Size"));
     size_x = create_spinbox();
     size_x->setMinimum(1);
@@ -103,25 +103,28 @@ ModelProperties::ModelProperties(MainWindow * parent)
     size_layout->addWidget(size_z);
     layout->addLayout(size_layout);
 
-/*    layout->addWidget(grid);
+    /*
+    layout->addWidget(grid);
     layout->addWidget(color_space);
     layout->addWidget(color_slider);
-*/
+    */
+
     setLayout(layout);
     ignore_changes = false;
 }
 
 void ModelProperties::update_controls()
 {
-    VoxelFile * voxel = window->get_voxel();
+    VoxelFile* voxel = window->get_voxel();
     if (voxel == NULL)
         return;
     ignore_changes = true;
 
     ref_list->clear();
     ReferencePoints::iterator it;
-    for (it = voxel->points.begin(); it != voxel->points.end(); it++) {
-        ReferencePoint & point = *it;
+    for (it = voxel->points.begin(); it != voxel->points.end(); it++)
+    {
+        ReferencePoint& point = *it;
         ref_list->addItem(point.name);
     }
 
@@ -138,12 +141,12 @@ void ModelProperties::update_controls()
     ignore_changes = false;
 }
 
-ReferencePoint * ModelProperties::get_point()
+ReferencePoint* ModelProperties::get_point()
 {
     int i = ref_list->currentIndex();
     if (i == -1)
         return NULL;
-    VoxelFile * voxel = window->get_voxel();
+    VoxelFile* voxel = window->get_voxel();
     if (voxel == NULL)
         return NULL;
     return window->get_voxel()->get_point(i);
@@ -154,8 +157,9 @@ ReferencePoint * ModelProperties::get_point()
 void ModelProperties::on_new_ref()
 {
     ignore_changes = true;
-    VoxelFile * voxel = window->get_voxel();
-    if (voxel == NULL) {
+    VoxelFile* voxel = window->get_voxel();
+    if (voxel == NULL)
+    {
         ignore_changes = false;
         return;
     }
@@ -170,8 +174,9 @@ void ModelProperties::on_new_ref()
 void ModelProperties::on_del_ref()
 {
     int i = ref_list->currentIndex();
-    VoxelFile * voxel = window->get_voxel();
-    if (voxel == NULL) {
+    VoxelFile* voxel = window->get_voxel();
+    if (voxel == NULL)
+    {
         ignore_changes = false;
         return;
     }
@@ -191,11 +196,11 @@ void ModelProperties::on_ref_change()
     window->model_changed();
 }
 
-void ModelProperties::on_ref_name(const QString & text)
+void ModelProperties::on_ref_name(const QString& text)
 {
     if (ignore_changes)
         return;
-    ReferencePoint * p = get_point();
+    ReferencePoint* p = get_point();
     if (p == NULL)
         return;
     p->name = text;
@@ -213,8 +218,9 @@ void ModelProperties::update_refs()
     if (disabled)
         return;
     ignore_changes = true;
-    ReferencePoint * p = get_point();
-    if (p != NULL) {
+    ReferencePoint* p = get_point();
+    if (p != NULL)
+    {
         ref_x->setValue(p->x);
         ref_y->setValue(p->y);
         ref_z->setValue(p->z);
@@ -226,13 +232,14 @@ void ModelProperties::on_change()
 {
     if (ignore_changes)
         return;
-    VoxelFile * voxel = window->get_voxel();
+    VoxelFile* voxel = window->get_voxel();
     if (voxel == NULL)
         return;
     voxel->set_offset(off_x->value(), off_y->value(), off_z->value());
     voxel->resize(0, 0, 0, size_x->value(), size_y->value(), size_z->value());
-    ReferencePoint * p = get_point();
-    if (p != NULL) {
+    ReferencePoint* p = get_point();
+    if (p != NULL)
+    {
         p->x = ref_x->value();
         p->y = ref_y->value();
         p->z = ref_z->value();

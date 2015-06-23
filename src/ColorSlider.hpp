@@ -30,15 +30,15 @@ class ColorSlider : public QWidget
     Q_OBJECT
 
 public:
-    QPixmap * pix;
+    QPixmap* pix;
     float value;
 
-    ColorSlider(QWidget * parent = 0);
+    ColorSlider(QWidget* parent = 0);
     void set(float v);
-    void set_mouse_pos(const QPoint & p);
-    void mousePressEvent(QMouseEvent * event);
+    void set_mouse_pos(const QPoint& p);
+    void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
-    void paintEvent(QPaintEvent * event);
+    void paintEvent(QPaintEvent* event);
 };
 
 #endif // VOXIE_COLORSLIDER_HPP
